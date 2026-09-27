@@ -1,0 +1,30 @@
+# owner: tests/inflow
+#
+# Test-only mock of Jupiter v6, loaded by the LiteSVM inflow tests at the real
+# Jupiter program id (programs/sijka-vault/tests/inflow). Never deployed.
+# Its own workspace: not a member of the root workspace, built only by CI
+# (`cargo build-sbf --manifest-path programs/sijka-vault/tests/mock-jupiter/Cargo.toml`).
+
+[package]
+name = "sijka-mock-jupiter"
+version = "0.0.0"
+edition = "2021"
+publish = false
+description = "Test-only Jupiter v6 mock with honest and malicious behaviours"
+
+[lib]
+crate-type = ["cdylib"]
+
+[dependencies]
+pinocchio = "=0.9.3"
+
+[lints.rust]
+unexpected_cfgs = { level = "warn", check-cfg = ['cfg(target_os, values("solana"))'] }
+
+[profile.release]
+opt-level = 2
+overflow-checks = true
+lto = "fat"
+codegen-units = 1
+
+[workspace]

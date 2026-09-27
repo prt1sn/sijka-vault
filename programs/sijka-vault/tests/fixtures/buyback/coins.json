@@ -1,0 +1,9 @@
+{
+  "comment": "Live pump.fun coins used by the buyback LiteSVM tests (tests/buyback). Each coin's BondingCurve.creator and Pool.coin_creator equal its pump_fees sharing-config PDA (the shape SIJKA has after fee sharing); none is mayhem / cashback / holder-reward, creator_fee_bps = 0. The tests patch only the SharingConfig shareholder (-> our fee_inbox) and, where a scenario needs it, the fields named in the test. Chosen 2026-09-26 from mainnet: dead coins, so their state changes rarely.",
+  "coins": [
+    { "label": "solcurve", "mint": "H9NSZiSpGSCXnpetbqDqYso4JGNmXeFRzJWDMiRFpump", "quote": "sol", "venue": "curve" },
+    { "label": "solamm", "mint": "BvQ9DqU8Pqs1tU6iQaqjnwZSXLwNxGEQRHx3wgeupump", "quote": "sol", "venue": "amm" },
+    { "label": "usdccurve", "mint": "AaJU3aSGcLocjmVUJ4y7UDPmXX9ZYq128R3tpuUSpump", "quote": "usdc", "venue": "curve" },
+    { "label": "usdcamm", "mint": "9isGuumtaqvJeJeyLF44fvfskk2cv5mYsopexMBfpump", "quote": "usdc", "venue": "amm" }
+  ]
+}

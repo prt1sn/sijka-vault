@@ -1,0 +1,9 @@
+# security.txt values (read with env!() at build time; the same table as programs/sijka-vault/.cargo/config.toml).
+[env]
+SIJKA_PROJECT_URL = "https://sijka.xyz"
+SIJKA_CONTACTS = "link:https://x.com/prt1sn"
+SIJKA_POLICY_URL = "https://github.com/prt1sn/sijka-vault/blob/main/SECURITY.md"
+SIJKA_SOURCE_CODE_URL = "https://github.com/prt1sn/sijka-vault"
+SIJKA_SOURCE_RELEASE = "v1.0.0"
+SIJKA_SOURCE_REVISION = "v1.0.0"
+SIJKA_AUDITORS = "None"

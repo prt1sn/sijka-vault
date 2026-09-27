@@ -1,0 +1,79 @@
+# owner: scaffold
+[package]
+name = "sijka-vault"
+version = "0.1.0"
+edition = "2024"
+rust-version = "1.89.0"
+publish = false
+description = "Sijka vault program (Pinocchio)"
+
+[lib]
+crate-type = ["cdylib", "lib"]
+
+[features]
+default = []
+# Build the library without the program entrypoint and security.txt (tests,
+# off-chain users of the layouts).
+no-entrypoint = []
+
+# SPEC §5.0.1: exactly these runtime dependencies. Versions resolve to the
+# crates pinned in Cargo.lock (pinocchio 0.9.3 satisfies "0.9.2").
+[dependencies]
+pinocchio = "0.9.2"
+pinocchio-pubkey = "0.3.0"
+pinocchio-token = "0.4.0"
+pinocchio-system = "0.3.0"
+phoenix-rise = { version = "=0.6.5", default-features = false, features = ["cpi"] }
+solana-security-txt = "1.1.3"
+
+# Host-only helpers for unit tests (ABI manifest check, PDA and discriminator
+# derivation checks). None of these reach the SBF binary.
+[dev-dependencies]
+serde_json = "1.0.151"
+sha2 = "0.10.9"
+solana-pubkey = { version = "~3.0", features = ["curve25519"] }
+
+# LiteSVM integration tests (tests/). They only build on non-Windows hosts:
+# litesvm's dependency tree needs a MinGW `dlltool` on Windows GNU hosts. CI
+# runs them on Ubuntu.
+[target.'cfg(not(windows))'.dev-dependencies]
+litesvm = "=0.16.0"
+phoenix-rise-litesvm-test = "=0.6.5"
+# tests/inflow, tests/buyback: `LiteSVM::set_account` takes
+# `solana_account::Account` (the version litesvm uses).
+solana-account = "~4.3"
+solana-instruction = "~3.4"
+solana-keypair = "~3.1"
+solana-signer = "~3.0"
+solana-transaction = "~4.1"
+# tests/buyback: builtin mock programs (mock Jupiter, mock pump / pump_amm,
+# CPI wrapper), same version as litesvm's own dependency tree.
+solana-program-runtime = { version = "=4.2.2", features = ["agave-unstable-api"] }
+# tests/sbpf_v3.rs: the runtime's own syscall registry (mainnet feature set,
+# deployment mode) for the SBPFv3 bytecode scan; same version as litesvm uses.
+solana-syscalls = { version = "=4.2.2", features = ["agave-unstable-api"] }
+
+[lints.rust]
+unsafe_code = "deny"
+unexpected_cfgs = { level = "warn", check-cfg = ['cfg(target_os, values("solana"))'] }
+
+# DECISIONS §14 / SPEC §5.0.7: checked arithmetic only, no casts that can
+# truncate, no panicking shortcuts, no floating point, no unchecked indexing.
+# Tests relax the panic-related lints (see the cfg_attr in src/lib.rs).
+[lints.clippy]
+arithmetic_side_effects = "deny"
+cast_possible_truncation = "deny"
+cast_possible_wrap = "deny"
+cast_sign_loss = "deny"
+float_arithmetic = "deny"
+float_cmp = "deny"
+indexing_slicing = "deny"
+unwrap_used = "deny"
+expect_used = "deny"
+panic = "deny"
+todo = "deny"
+unimplemented = "deny"
+unreachable = "deny"
+dbg_macro = "deny"
+print_stdout = "deny"
+print_stderr = "deny"

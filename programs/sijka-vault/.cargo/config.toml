@@ -1,0 +1,17 @@
+# owner: scaffold
+#
+# security.txt values (SPEC §1.8, DECISIONS §3.13). They are read with env!()
+# at build time, so a build without them fails. Committed so that
+# `solana-verify build` reproduces the hash. Update before the release build
+# (LAUNCH-CHECKLIST §1): project URL, public repository, release tag.
+#
+# Keep the [env] table identical to the repository root .cargo/config.toml
+# (cargo reads config from the current directory upwards; CI checks both match).
+[env]
+SIJKA_PROJECT_URL = "https://sijka.xyz"
+SIJKA_CONTACTS = "link:https://x.com/prt1sn"
+SIJKA_POLICY_URL = "https://github.com/prt1sn/sijka-vault/blob/main/SECURITY.md"
+SIJKA_SOURCE_CODE_URL = "https://github.com/prt1sn/sijka-vault"
+SIJKA_SOURCE_RELEASE = "v1.0.0"
+SIJKA_SOURCE_REVISION = "v1.0.0"
+SIJKA_AUDITORS = "None"

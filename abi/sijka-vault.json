@@ -1,0 +1,6176 @@
+{
+  "name": "sijka-vault",
+  "generatedFrom": "docs/SPEC.md",
+  "errorBase": 1397358592,
+  "constants": {
+    "PHOENIX_PROGRAM_ID": "EtrnLzgbS7nMMy5fbD42kXiUzGg8XQzJ972Xtk1cjWih",
+    "PHOENIX_LOG_AUTHORITY": "GdxfTLSsdSY37G6fZoYtdGDSfgFnbT2EmRpuePZxWShS",
+    "PHOENIX_GLOBAL_CONFIG": "2zskx2iyCvb6Stg7RBZkt1f6MrF4dpYtMG3yMvKwqtUZ",
+    "HAWKEYE_PROGRAM_ID": "RiSeVw3ZjNfsaXPRb4mgaqYaEEt41pNNJoDvVh7pgQj",
+    "EMBER_PROGRAM_ID": "EMBERpYNE6ehWmXymZZS2skiFmCa9V5dp14e1iduM5qy",
+    "EMBER_STATE": "6ur7v6AXNpnHeEb6xuk7PyezvZ1i5GrgYyWZkNCpzbRz",
+    "EMBER_VAULT": "FKcEb4TdPDTRuMnQDpSEPQBcrm15S73xiUD6Qf8ZLUkq",
+    "JUPITER_V6": "JUP6LkbZbjS1jKKwapdHNy74zcZ3tLUZoi5QNyVTaV4",
+    "PUMP_PROGRAM": "6EF8rrecthR5Dkzon8Nwu78hRvfCKubJ14M5uBEwF6P",
+    "PUMP_AMM_PROGRAM": "pAMMBay6oceH9fJKBRHGP5D4bD4sWpmSwMn52FMfXEA",
+    "PUMP_FEES_PROGRAM": "pfeeUxB6jkeY1Hxd7CsFCAjcbHA9rWtchMGdZ6VojVZ",
+    "PUMP_GLOBAL": "4wTV1YmiEkRvAtNtsSGPtUrqRYQMe5SKy2uB4Jjaxnjf",
+    "PUMP_EVENT_AUTHORITY": "Ce6TQqeHC9p8KetsN6JsjHK7UTZk7nasjjnr7XxXp9F1",
+    "PUMP_GVA": "Hq2wp8uJ9jCPsYgNHex8RtqdvMPfVGoYwjvF1ATiwn2Y",
+    "PUMP_FEE_CONFIG": "8Wf5TiAheLUqBrKXeYg2JtAFFMWtKdG2BSFgqUcPVwTt",
+    "AMM_GLOBAL_CONFIG": "ADyA8hdefvWN2dbGGWFotbzWxrAvLW83WG6QCVXvJKqw",
+    "AMM_EVENT_AUTHORITY": "GS4CU59F31iL7aR2Q8zVS8DRrcRnXX1yjQ66TqNVQnaR",
+    "AMM_GVA": "C2aFPdENg4A2HQsmrd5rTw5TaYBX5Ku887cWjbFKtZpw",
+    "AMM_FEE_CONFIG": "5PHirr8joyTMp9JMm6nW7hNDVyEYdkzDqazxPD7RaTjx",
+    "SPL_TOKEN_PROGRAM_ID": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA",
+    "TOKEN_2022_PROGRAM_ID": "TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb",
+    "ATA_PROGRAM_ID": "ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL",
+    "SYSTEM_PROGRAM_ID": "11111111111111111111111111111111",
+    "COMPUTE_BUDGET_PROGRAM_ID": "ComputeBudget111111111111111111111111111111",
+    "INSTRUCTIONS_SYSVAR": "Sysvar1nstructions1111111111111111111111111",
+    "BPF_LOADER_UPGRADEABLE_ID": "BPFLoaderUpgradeab1e11111111111111111111111",
+    "PHOENIX_PROGRAM_DATA": "B5ayDaz9HegiNZqYeBtcFqfZBVSGwjB2CJgHshoSfMQg",
+    "JITO_DONT_FRONT": "jitodontfront111111111111111111111111111111"
+  },
+  "pdas": [
+    {
+      "name": "config",
+      "seeds": [
+        "config"
+      ]
+    },
+    {
+      "name": "buyback_state",
+      "seeds": [
+        "buyback_state"
+      ]
+    },
+    {
+      "name": "fee_inbox",
+      "seeds": [
+        "fee_inbox"
+      ]
+    },
+    {
+      "name": "phx_authority",
+      "seeds": [
+        "phx_authority"
+      ]
+    },
+    {
+      "name": "swap_authority",
+      "seeds": [
+        "swap"
+      ]
+    },
+    {
+      "name": "buyback_authority",
+      "seeds": [
+        "buyback"
+      ]
+    },
+    {
+      "name": "rent_payer",
+      "seeds": [
+        "rent_payer"
+      ]
+    },
+    {
+      "name": "creator_escrow",
+      "seeds": [
+        "creator_escrow"
+      ]
+    },
+    {
+      "name": "bb_unwrap",
+      "seeds": [
+        "bb_unwrap"
+      ]
+    }
+  ],
+  "accounts": {
+    "HarvestParams": {
+      "size": 64,
+      "fields": [
+        {
+          "name": "epsilon",
+          "offset": 0,
+          "size": 8,
+          "type": "u64"
+        },
+        {
+          "name": "d_min",
+          "offset": 8,
+          "size": 8,
+          "type": "u64"
+        },
+        {
+          "name": "margin_buffer_abs",
+          "offset": 16,
+          "size": 8,
+          "type": "u64"
+        },
+        {
+          "name": "max_harvest_per_call",
+          "offset": 24,
+          "size": 8,
+          "type": "u64"
+        },
+        {
+          "name": "_reserved0",
+          "offset": 32,
+          "size": 8,
+          "type": "[u8;8]"
+        },
+        {
+          "name": "t_min_secs",
+          "offset": 40,
+          "size": 4,
+          "type": "u32"
+        },
+        {
+          "name": "margin_buffer_im_bps",
+          "offset": 44,
+          "size": 4,
+          "type": "u32"
+        },
+        {
+          "name": "max_buyback_backlog",
+          "offset": 48,
+          "size": 8,
+          "type": "u64"
+        },
+        {
+          "name": "_reserved1",
+          "offset": 56,
+          "size": 2,
+          "type": "[u8;2]"
+        },
+        {
+          "name": "harvest_mark_max_age_slots",
+          "offset": 58,
+          "size": 2,
+          "type": "u16"
+        },
+        {
+          "name": "_reserved",
+          "offset": 60,
+          "size": 4,
+          "type": "[u8;4]"
+        }
+      ]
+    },
+    "InflowParams": {
+      "size": 40,
+      "fields": [
+        {
+          "name": "_reserved0",
+          "offset": 0,
+          "size": 4,
+          "type": "[u8;4]"
+        },
+        {
+          "name": "swap_min_interval_s",
+          "offset": 4,
+          "size": 4,
+          "type": "u32"
+        },
+        {
+          "name": "swap_max_lamports",
+          "offset": 8,
+          "size": 8,
+          "type": "u64"
+        },
+        {
+          "name": "swap_min_lamports",
+          "offset": 16,
+          "size": 8,
+          "type": "u64"
+        },
+        {
+          "name": "deposit_min_atoms",
+          "offset": 24,
+          "size": 8,
+          "type": "u64"
+        },
+        {
+          "name": "_reserved1",
+          "offset": 32,
+          "size": 8,
+          "type": "[u8;8]"
+        }
+      ]
+    },
+    "BuybackParams": {
+      "size": 80,
+      "fields": [
+        {
+          "name": "chunk_bps",
+          "offset": 0,
+          "size": 2,
+          "type": "u16"
+        },
+        {
+          "name": "_reserved0",
+          "offset": 2,
+          "size": 4,
+          "type": "[u8;4]"
+        },
+        {
+          "name": "obs_clamp_bps",
+          "offset": 6,
+          "size": 2,
+          "type": "u16"
+        },
+        {
+          "name": "_reserved1",
+          "offset": 8,
+          "size": 2,
+          "type": "[u8;2]"
+        },
+        {
+          "name": "warmup_obs",
+          "offset": 10,
+          "size": 2,
+          "type": "u16"
+        },
+        {
+          "name": "buy_min_interval_s",
+          "offset": 12,
+          "size": 4,
+          "type": "u32"
+        },
+        {
+          "name": "obs_max_age_s",
+          "offset": 16,
+          "size": 4,
+          "type": "u32"
+        },
+        {
+          "name": "swap_min_interval_s",
+          "offset": 20,
+          "size": 4,
+          "type": "u32"
+        },
+        {
+          "name": "_reserved2",
+          "offset": 24,
+          "size": 4,
+          "type": "[u8;4]"
+        },
+        {
+          "name": "_pad",
+          "offset": 28,
+          "size": 4,
+          "type": "u32"
+        },
+        {
+          "name": "chunk_max_quote",
+          "offset": 32,
+          "size": 8,
+          "type": "u64"
+        },
+        {
+          "name": "chunk_min_quote",
+          "offset": 40,
+          "size": 8,
+          "type": "u64"
+        },
+        {
+          "name": "swap_max_usdc",
+          "offset": 48,
+          "size": 8,
+          "type": "u64"
+        },
+        {
+          "name": "sol_budget_cap",
+          "offset": 56,
+          "size": 8,
+          "type": "u64"
+        },
+        {
+          "name": "_reserved",
+          "offset": 64,
+          "size": 16,
+          "type": "[u8;16]"
+        }
+      ]
+    },
+    "Config": {
+      "discriminator": "SIJKACFG",
+      "version": 1,
+      "versionType": "u16",
+      "seeds": [
+        "config"
+      ],
+      "size": 5144,
+      "fields": [
+        {
+          "name": "discriminator",
+          "offset": 0,
+          "size": 8,
+          "type": "[u8;8]"
+        },
+        {
+          "name": "version",
+          "offset": 8,
+          "size": 2,
+          "type": "u16"
+        },
+        {
+          "name": "_reserved6",
+          "offset": 10,
+          "size": 1,
+          "type": "u8"
+        },
+        {
+          "name": "_reserved0",
+          "offset": 11,
+          "size": 1,
+          "type": "u8"
+        },
+        {
+          "name": "creator_share_bps",
+          "offset": 12,
+          "size": 2,
+          "type": "u16"
+        },
+        {
+          "name": "token_decimals",
+          "offset": 14,
+          "size": 1,
+          "type": "u8"
+        },
+        {
+          "name": "trader_registered_by_program",
+          "offset": 15,
+          "size": 1,
+          "type": "u8"
+        },
+        {
+          "name": "admin",
+          "offset": 16,
+          "size": 32,
+          "type": "Pubkey"
+        },
+        {
+          "name": "keeper",
+          "offset": 48,
+          "size": 32,
+          "type": "Pubkey"
+        },
+        {
+          "name": "trader",
+          "offset": 80,
+          "size": 32,
+          "type": "Pubkey"
+        },
+        {
+          "name": "creator_payout",
+          "offset": 112,
+          "size": 32,
+          "type": "Pubkey"
+        },
+        {
+          "name": "quote_mint",
+          "offset": 144,
+          "size": 32,
+          "type": "Pubkey"
+        },
+        {
+          "name": "usdc_mint",
+          "offset": 176,
+          "size": 32,
+          "type": "Pubkey"
+        },
+        {
+          "name": "phusd_mint",
+          "offset": 208,
+          "size": 32,
+          "type": "Pubkey"
+        },
+        {
+          "name": "token_mint",
+          "offset": 240,
+          "size": 32,
+          "type": "Pubkey"
+        },
+        {
+          "name": "token_program",
+          "offset": 272,
+          "size": 32,
+          "type": "Pubkey"
+        },
+        {
+          "name": "phoenix_trader",
+          "offset": 304,
+          "size": 32,
+          "type": "Pubkey"
+        },
+        {
+          "name": "fee_inbox",
+          "offset": 336,
+          "size": 32,
+          "type": "Pubkey"
+        },
+        {
+          "name": "phx_authority",
+          "offset": 368,
+          "size": 32,
+          "type": "Pubkey"
+        },
+        {
+          "name": "swap_authority",
+          "offset": 400,
+          "size": 32,
+          "type": "Pubkey"
+        },
+        {
+          "name": "buyback_authority",
+          "offset": 432,
+          "size": 32,
+          "type": "Pubkey"
+        },
+        {
+          "name": "rent_payer",
+          "offset": 464,
+          "size": 32,
+          "type": "Pubkey"
+        },
+        {
+          "name": "vault_usdc",
+          "offset": 496,
+          "size": 32,
+          "type": "Pubkey"
+        },
+        {
+          "name": "vault_phusd",
+          "offset": 528,
+          "size": 32,
+          "type": "Pubkey"
+        },
+        {
+          "name": "creator_usdc",
+          "offset": 560,
+          "size": 32,
+          "type": "Pubkey"
+        },
+        {
+          "name": "buyback_usdc",
+          "offset": 592,
+          "size": 32,
+          "type": "Pubkey"
+        },
+        {
+          "name": "buyback_token",
+          "offset": 624,
+          "size": 32,
+          "type": "Pubkey"
+        },
+        {
+          "name": "config_bump",
+          "offset": 656,
+          "size": 1,
+          "type": "u8"
+        },
+        {
+          "name": "fee_inbox_bump",
+          "offset": 657,
+          "size": 1,
+          "type": "u8"
+        },
+        {
+          "name": "phx_authority_bump",
+          "offset": 658,
+          "size": 1,
+          "type": "u8"
+        },
+        {
+          "name": "swap_authority_bump",
+          "offset": 659,
+          "size": 1,
+          "type": "u8"
+        },
+        {
+          "name": "buyback_authority_bump",
+          "offset": 660,
+          "size": 1,
+          "type": "u8"
+        },
+        {
+          "name": "rent_payer_bump",
+          "offset": 661,
+          "size": 1,
+          "type": "u8"
+        },
+        {
+          "name": "phoenix_trader_bump",
+          "offset": 662,
+          "size": 1,
+          "type": "u8"
+        },
+        {
+          "name": "_pad0",
+          "offset": 663,
+          "size": 1,
+          "type": "u8"
+        },
+        {
+          "name": "trader_preference_bits",
+          "offset": 664,
+          "size": 4,
+          "type": "u32"
+        },
+        {
+          "name": "trader_max_positions",
+          "offset": 668,
+          "size": 4,
+          "type": "u32"
+        },
+        {
+          "name": "created_ts",
+          "offset": 672,
+          "size": 8,
+          "type": "i64"
+        },
+        {
+          "name": "token_mint_set_ts",
+          "offset": 680,
+          "size": 8,
+          "type": "i64"
+        },
+        {
+          "name": "trader_registered_ts",
+          "offset": 688,
+          "size": 8,
+          "type": "i64"
+        },
+        {
+          "name": "last_admin_action_ts",
+          "offset": 696,
+          "size": 8,
+          "type": "i64"
+        },
+        {
+          "name": "cum_inflow_usdc",
+          "offset": 704,
+          "size": 8,
+          "type": "u64"
+        },
+        {
+          "name": "cum_payout_usdc",
+          "offset": 712,
+          "size": 8,
+          "type": "u64"
+        },
+        {
+          "name": "cum_payout_creator",
+          "offset": 720,
+          "size": 8,
+          "type": "u64"
+        },
+        {
+          "name": "cum_payout_buyback",
+          "offset": 728,
+          "size": 8,
+          "type": "u64"
+        },
+        {
+          "name": "_reserved2",
+          "offset": 736,
+          "size": 8,
+          "type": "u64"
+        },
+        {
+          "name": "cum_withdraw_fees",
+          "offset": 744,
+          "size": 8,
+          "type": "u64"
+        },
+        {
+          "name": "harvest_count",
+          "offset": 752,
+          "size": 8,
+          "type": "u64"
+        },
+        {
+          "name": "last_harvest_ts",
+          "offset": 760,
+          "size": 8,
+          "type": "i64"
+        },
+        {
+          "name": "last_harvest_slot",
+          "offset": 768,
+          "size": 8,
+          "type": "u64"
+        },
+        {
+          "name": "last_harvest_amount",
+          "offset": 776,
+          "size": 8,
+          "type": "u64"
+        },
+        {
+          "name": "inflow_count",
+          "offset": 784,
+          "size": 8,
+          "type": "u64"
+        },
+        {
+          "name": "cum_creator_paid_out",
+          "offset": 792,
+          "size": 8,
+          "type": "u64"
+        },
+        {
+          "name": "creator_pay_count",
+          "offset": 800,
+          "size": 8,
+          "type": "u64"
+        },
+        {
+          "name": "cum_ember_wrap_fees",
+          "offset": 808,
+          "size": 8,
+          "type": "u64"
+        },
+        {
+          "name": "_counters_reserved",
+          "offset": 816,
+          "size": 16,
+          "type": "[u8;16]"
+        },
+        {
+          "name": "harvest_params",
+          "offset": 832,
+          "size": 64,
+          "type": "HarvestParams"
+        },
+        {
+          "name": "_reserved7",
+          "offset": 896,
+          "size": 32,
+          "type": "[u8;32]"
+        },
+        {
+          "name": "buyback_state",
+          "offset": 928,
+          "size": 32,
+          "type": "Pubkey"
+        },
+        {
+          "name": "bb_unwrap",
+          "offset": 960,
+          "size": 32,
+          "type": "Pubkey"
+        },
+        {
+          "name": "_reserved8",
+          "offset": 992,
+          "size": 1,
+          "type": "u8"
+        },
+        {
+          "name": "buyback_state_bump",
+          "offset": 993,
+          "size": 1,
+          "type": "u8"
+        },
+        {
+          "name": "bb_unwrap_bump",
+          "offset": 994,
+          "size": 1,
+          "type": "u8"
+        },
+        {
+          "name": "creator_escrow_bump",
+          "offset": 995,
+          "size": 1,
+          "type": "u8"
+        },
+        {
+          "name": "_pad1",
+          "offset": 996,
+          "size": 4,
+          "type": "[u8;4]"
+        },
+        {
+          "name": "_reserved9",
+          "offset": 1000,
+          "size": 8,
+          "type": "[u8;8]"
+        },
+        {
+          "name": "_reserved3",
+          "offset": 1008,
+          "size": 104,
+          "type": "[u8;104]"
+        },
+        {
+          "name": "inflow_params",
+          "offset": 1112,
+          "size": 40,
+          "type": "InflowParams"
+        },
+        {
+          "name": "_reserved10",
+          "offset": 1152,
+          "size": 1,
+          "type": "u8"
+        },
+        {
+          "name": "_pad2",
+          "offset": 1153,
+          "size": 7,
+          "type": "[u8;7]"
+        },
+        {
+          "name": "cum_ember_wrapped",
+          "offset": 1160,
+          "size": 8,
+          "type": "u64"
+        },
+        {
+          "name": "cum_phusd_direct",
+          "offset": 1168,
+          "size": 8,
+          "type": "u64"
+        },
+        {
+          "name": "cum_swap_lamports_spent",
+          "offset": 1176,
+          "size": 8,
+          "type": "u64"
+        },
+        {
+          "name": "cum_swap_usdc_received",
+          "offset": 1184,
+          "size": 8,
+          "type": "u64"
+        },
+        {
+          "name": "cum_fee_usdc_swept",
+          "offset": 1192,
+          "size": 8,
+          "type": "u64"
+        },
+        {
+          "name": "cum_swap_usdc_swept",
+          "offset": 1200,
+          "size": 8,
+          "type": "u64"
+        },
+        {
+          "name": "swap_count",
+          "offset": 1208,
+          "size": 8,
+          "type": "u64"
+        },
+        {
+          "name": "last_swap_ts",
+          "offset": 1216,
+          "size": 8,
+          "type": "i64"
+        },
+        {
+          "name": "last_swap_slot",
+          "offset": 1224,
+          "size": 8,
+          "type": "u64"
+        },
+        {
+          "name": "last_deposit_slot",
+          "offset": 1232,
+          "size": 8,
+          "type": "u64"
+        },
+        {
+          "name": "last_deposit_amount",
+          "offset": 1240,
+          "size": 8,
+          "type": "u64"
+        },
+        {
+          "name": "swap_wsol",
+          "offset": 1248,
+          "size": 32,
+          "type": "Pubkey"
+        },
+        {
+          "name": "swap_usdc",
+          "offset": 1280,
+          "size": 32,
+          "type": "Pubkey"
+        },
+        {
+          "name": "creator_escrow",
+          "offset": 1312,
+          "size": 32,
+          "type": "Pubkey"
+        },
+        {
+          "name": "next_swap_ts",
+          "offset": 1344,
+          "size": 8,
+          "type": "i64"
+        },
+        {
+          "name": "_reserved4",
+          "offset": 1352,
+          "size": 16,
+          "type": "[u8;16]"
+        },
+        {
+          "name": "creator_escrow_usdc",
+          "offset": 1368,
+          "size": 32,
+          "type": "Pubkey"
+        },
+        {
+          "name": "recovery_mode",
+          "offset": 1400,
+          "size": 1,
+          "type": "u8"
+        },
+        {
+          "name": "venue_last_verdict",
+          "offset": 1401,
+          "size": 1,
+          "type": "u8"
+        },
+        {
+          "name": "venue_last_reason",
+          "offset": 1402,
+          "size": 1,
+          "type": "u8"
+        },
+        {
+          "name": "venue_major_seen",
+          "offset": 1403,
+          "size": 1,
+          "type": "u8"
+        },
+        {
+          "name": "venue_major_asset_id",
+          "offset": 1404,
+          "size": 12,
+          "type": "[u32;3]"
+        },
+        {
+          "name": "venue_down_since_ts",
+          "offset": 1416,
+          "size": 8,
+          "type": "i64"
+        },
+        {
+          "name": "venue_last_down_obs_ts",
+          "offset": 1424,
+          "size": 8,
+          "type": "i64"
+        },
+        {
+          "name": "last_venue_obs_ts",
+          "offset": 1432,
+          "size": 8,
+          "type": "i64"
+        },
+        {
+          "name": "last_venue_obs_slot",
+          "offset": 1440,
+          "size": 8,
+          "type": "u64"
+        },
+        {
+          "name": "venue_obs_count",
+          "offset": 1448,
+          "size": 8,
+          "type": "u64"
+        },
+        {
+          "name": "recovery_latched_ts",
+          "offset": 1456,
+          "size": 8,
+          "type": "i64"
+        },
+        {
+          "name": "recovery_latched_slot",
+          "offset": 1464,
+          "size": 8,
+          "type": "u64"
+        },
+        {
+          "name": "emergency_recipient",
+          "offset": 1472,
+          "size": 32,
+          "type": "Pubkey"
+        },
+        {
+          "name": "emergency_recipient_usdc",
+          "offset": 1504,
+          "size": 32,
+          "type": "Pubkey"
+        },
+        {
+          "name": "cum_recovery_withdrawn",
+          "offset": 1536,
+          "size": 8,
+          "type": "u64"
+        },
+        {
+          "name": "cum_recovered_usdc",
+          "offset": 1544,
+          "size": 8,
+          "type": "u64"
+        },
+        {
+          "name": "_reserved11",
+          "offset": 1552,
+          "size": 8,
+          "type": "[u8;8]"
+        },
+        {
+          "name": "cum_recovered_lamports",
+          "offset": 1560,
+          "size": 8,
+          "type": "u64"
+        },
+        {
+          "name": "_reserved12",
+          "offset": 1568,
+          "size": 8,
+          "type": "[u8;8]"
+        },
+        {
+          "name": "cum_recovery_fees",
+          "offset": 1576,
+          "size": 8,
+          "type": "u64"
+        },
+        {
+          "name": "recovery_op_count",
+          "offset": 1584,
+          "size": 8,
+          "type": "u64"
+        },
+        {
+          "name": "emergency_recipient_phusd",
+          "offset": 1592,
+          "size": 32,
+          "type": "Pubkey"
+        },
+        {
+          "name": "recovery_last_enqueue_slot",
+          "offset": 1624,
+          "size": 8,
+          "type": "u64"
+        },
+        {
+          "name": "cum_recovery_queued",
+          "offset": 1632,
+          "size": 8,
+          "type": "u64"
+        },
+        {
+          "name": "cum_recovery_unwrapped",
+          "offset": 1640,
+          "size": 8,
+          "type": "u64"
+        },
+        {
+          "name": "cum_recovered_phusd",
+          "offset": 1648,
+          "size": 8,
+          "type": "u64"
+        },
+        {
+          "name": "_reserved5",
+          "offset": 1656,
+          "size": 3488,
+          "type": "[u8;3488]"
+        }
+      ]
+    },
+    "BuybackState": {
+      "discriminator": "SIJKABBS",
+      "version": 1,
+      "versionType": "u8",
+      "seeds": [
+        "buyback_state"
+      ],
+      "size": 1304,
+      "fields": [
+        {
+          "name": "discriminator",
+          "offset": 0,
+          "size": 8,
+          "type": "[u8;8]"
+        },
+        {
+          "name": "version",
+          "offset": 8,
+          "size": 1,
+          "type": "u8"
+        },
+        {
+          "name": "flags",
+          "offset": 9,
+          "size": 1,
+          "type": "u8"
+        },
+        {
+          "name": "venue",
+          "offset": 10,
+          "size": 1,
+          "type": "u8"
+        },
+        {
+          "name": "quote_kind",
+          "offset": 11,
+          "size": 1,
+          "type": "u8"
+        },
+        {
+          "name": "base_decimals",
+          "offset": 12,
+          "size": 1,
+          "type": "u8"
+        },
+        {
+          "name": "base_tp_kind",
+          "offset": 13,
+          "size": 1,
+          "type": "u8"
+        },
+        {
+          "name": "bump_buyback_state",
+          "offset": 14,
+          "size": 1,
+          "type": "u8"
+        },
+        {
+          "name": "bump_buyback_authority",
+          "offset": 15,
+          "size": 1,
+          "type": "u8"
+        },
+        {
+          "name": "bump_swap_authority",
+          "offset": 16,
+          "size": 1,
+          "type": "u8"
+        },
+        {
+          "name": "bump_bb_unwrap",
+          "offset": 17,
+          "size": 1,
+          "type": "u8"
+        },
+        {
+          "name": "_pad0",
+          "offset": 18,
+          "size": 6,
+          "type": "[u8;6]"
+        },
+        {
+          "name": "_reserved1",
+          "offset": 24,
+          "size": 8,
+          "type": "[u8;8]"
+        },
+        {
+          "name": "last_obs_ts",
+          "offset": 32,
+          "size": 8,
+          "type": "i64"
+        },
+        {
+          "name": "last_obs_slot",
+          "offset": 40,
+          "size": 8,
+          "type": "u64"
+        },
+        {
+          "name": "ema_price_x64",
+          "offset": 48,
+          "size": 16,
+          "type": "u128"
+        },
+        {
+          "name": "last_obs_price_x64",
+          "offset": 64,
+          "size": 16,
+          "type": "u128"
+        },
+        {
+          "name": "last_obs_quote",
+          "offset": 80,
+          "size": 8,
+          "type": "u64"
+        },
+        {
+          "name": "q_ema",
+          "offset": 88,
+          "size": 8,
+          "type": "u64"
+        },
+        {
+          "name": "fresh_obs",
+          "offset": 96,
+          "size": 2,
+          "type": "u16"
+        },
+        {
+          "name": "_pad1",
+          "offset": 98,
+          "size": 6,
+          "type": "[u8;6]"
+        },
+        {
+          "name": "last_buy_ts",
+          "offset": 104,
+          "size": 8,
+          "type": "i64"
+        },
+        {
+          "name": "last_buy_slot",
+          "offset": 112,
+          "size": 8,
+          "type": "u64"
+        },
+        {
+          "name": "last_swap_ts",
+          "offset": 120,
+          "size": 8,
+          "type": "i64"
+        },
+        {
+          "name": "venue_since_slot",
+          "offset": 128,
+          "size": 8,
+          "type": "u64"
+        },
+        {
+          "name": "n_obs",
+          "offset": 136,
+          "size": 8,
+          "type": "u64"
+        },
+        {
+          "name": "n_chunks",
+          "offset": 144,
+          "size": 8,
+          "type": "u64"
+        },
+        {
+          "name": "cum_payout_buyback_spent",
+          "offset": 152,
+          "size": 8,
+          "type": "u64"
+        },
+        {
+          "name": "cum_usdc_swapped",
+          "offset": 160,
+          "size": 8,
+          "type": "u64"
+        },
+        {
+          "name": "cum_sol_from_swaps",
+          "offset": 168,
+          "size": 8,
+          "type": "u64"
+        },
+        {
+          "name": "cum_quote_spent_curve",
+          "offset": 176,
+          "size": 8,
+          "type": "u64"
+        },
+        {
+          "name": "cum_quote_spent_amm",
+          "offset": 184,
+          "size": 8,
+          "type": "u64"
+        },
+        {
+          "name": "cum_rent_spent",
+          "offset": 192,
+          "size": 8,
+          "type": "u64"
+        },
+        {
+          "name": "cum_bought_tokens",
+          "offset": 200,
+          "size": 8,
+          "type": "u64"
+        },
+        {
+          "name": "cum_burned_tokens",
+          "offset": 208,
+          "size": 8,
+          "type": "u64"
+        },
+        {
+          "name": "n_swaps",
+          "offset": 216,
+          "size": 8,
+          "type": "u64"
+        },
+        {
+          "name": "_reserved0",
+          "offset": 224,
+          "size": 8,
+          "type": "u64"
+        },
+        {
+          "name": "params",
+          "offset": 232,
+          "size": 80,
+          "type": "BuybackParams"
+        },
+        {
+          "name": "pinned",
+          "offset": 312,
+          "size": 864,
+          "type": "[Pubkey;27]"
+        },
+        {
+          "name": "usdc_mint",
+          "offset": 1176,
+          "size": 32,
+          "type": "Pubkey"
+        },
+        {
+          "name": "next_buy_ts",
+          "offset": 1208,
+          "size": 8,
+          "type": "i64"
+        },
+        {
+          "name": "next_swap_ts",
+          "offset": 1216,
+          "size": 8,
+          "type": "i64"
+        },
+        {
+          "name": "_reserved_tail",
+          "offset": 1224,
+          "size": 80,
+          "type": "[u8;80]"
+        }
+      ]
+    },
+    "HarvestPreview": {
+      "size": 168,
+      "fields": [
+        {
+          "name": "magic",
+          "offset": 0,
+          "size": 8,
+          "type": "[u8;8]"
+        },
+        {
+          "name": "version",
+          "offset": 8,
+          "size": 1,
+          "type": "u8"
+        },
+        {
+          "name": "status",
+          "offset": 9,
+          "size": 1,
+          "type": "u8"
+        },
+        {
+          "name": "_pad",
+          "offset": 10,
+          "size": 6,
+          "type": "[u8;6]"
+        },
+        {
+          "name": "now",
+          "offset": 16,
+          "size": 8,
+          "type": "i64"
+        },
+        {
+          "name": "next_allowed_ts",
+          "offset": 24,
+          "size": 8,
+          "type": "i64"
+        },
+        {
+          "name": "I",
+          "offset": 32,
+          "size": 8,
+          "type": "u64"
+        },
+        {
+          "name": "O",
+          "offset": 40,
+          "size": 8,
+          "type": "u64"
+        },
+        {
+          "name": "C_hk",
+          "offset": 48,
+          "size": 8,
+          "type": "i64"
+        },
+        {
+          "name": "C_hdr",
+          "offset": 56,
+          "size": 8,
+          "type": "i64"
+        },
+        {
+          "name": "U",
+          "offset": 64,
+          "size": 8,
+          "type": "i64"
+        },
+        {
+          "name": "F",
+          "offset": 72,
+          "size": 8,
+          "type": "i64"
+        },
+        {
+          "name": "D_star",
+          "offset": 80,
+          "size": 8,
+          "type": "i64"
+        },
+        {
+          "name": "W",
+          "offset": 88,
+          "size": 8,
+          "type": "i64"
+        },
+        {
+          "name": "buf",
+          "offset": 96,
+          "size": 8,
+          "type": "u64"
+        },
+        {
+          "name": "D",
+          "offset": 104,
+          "size": 8,
+          "type": "i64"
+        },
+        {
+          "name": "IM",
+          "offset": 112,
+          "size": 8,
+          "type": "u64"
+        },
+        {
+          "name": "position_count",
+          "offset": 120,
+          "size": 2,
+          "type": "u16"
+        },
+        {
+          "name": "risk_tier",
+          "offset": 122,
+          "size": 1,
+          "type": "u8"
+        },
+        {
+          "name": "is_liquidatable",
+          "offset": 123,
+          "size": 1,
+          "type": "u8"
+        },
+        {
+          "name": "_pad2",
+          "offset": 124,
+          "size": 4,
+          "type": "[u8;4]"
+        },
+        {
+          "name": "buyback_usdc",
+          "offset": 128,
+          "size": 8,
+          "type": "u64"
+        },
+        {
+          "name": "queue_cap",
+          "offset": 136,
+          "size": 8,
+          "type": "u64"
+        },
+        {
+          "name": "total_queued",
+          "offset": 144,
+          "size": 8,
+          "type": "u64"
+        },
+        {
+          "name": "cooldown_until_slot",
+          "offset": 152,
+          "size": 8,
+          "type": "u64"
+        },
+        {
+          "name": "stale_positions",
+          "offset": 160,
+          "size": 2,
+          "type": "u16"
+        },
+        {
+          "name": "bits",
+          "offset": 162,
+          "size": 1,
+          "type": "u8"
+        },
+        {
+          "name": "_pad3",
+          "offset": 163,
+          "size": 5,
+          "type": "[u8;5]"
+        }
+      ]
+    }
+  },
+  "buybackPinned": [
+    {
+      "k": 0,
+      "offset": 312,
+      "name": "buyback_authority"
+    },
+    {
+      "k": 1,
+      "offset": 344,
+      "name": "swap_authority"
+    },
+    {
+      "k": 2,
+      "offset": 376,
+      "name": "bb_unwrap"
+    },
+    {
+      "k": 3,
+      "offset": 408,
+      "name": "bb_usdc"
+    },
+    {
+      "k": 4,
+      "offset": 440,
+      "name": "swap_usdc"
+    },
+    {
+      "k": 5,
+      "offset": 472,
+      "name": "bb_wsol"
+    },
+    {
+      "k": 6,
+      "offset": 504,
+      "name": "mint"
+    },
+    {
+      "k": 7,
+      "offset": 536,
+      "name": "base_token_program"
+    },
+    {
+      "k": 8,
+      "offset": 568,
+      "name": "quote_mint"
+    },
+    {
+      "k": 9,
+      "offset": 600,
+      "name": "bb_sijka"
+    },
+    {
+      "k": 10,
+      "offset": 632,
+      "name": "bb_quote"
+    },
+    {
+      "k": 11,
+      "offset": 664,
+      "name": "bonding_curve"
+    },
+    {
+      "k": 12,
+      "offset": 696,
+      "name": "assoc_base_bonding_curve"
+    },
+    {
+      "k": 13,
+      "offset": 728,
+      "name": "assoc_quote_bonding_curve"
+    },
+    {
+      "k": 14,
+      "offset": 760,
+      "name": "sharing_config"
+    },
+    {
+      "k": 15,
+      "offset": 792,
+      "name": "creator_vault"
+    },
+    {
+      "k": 16,
+      "offset": 824,
+      "name": "assoc_creator_vault"
+    },
+    {
+      "k": 17,
+      "offset": 856,
+      "name": "pump_user_volume_acc"
+    },
+    {
+      "k": 18,
+      "offset": 888,
+      "name": "pump_assoc_user_volume_acc"
+    },
+    {
+      "k": 19,
+      "offset": 920,
+      "name": "pool_authority"
+    },
+    {
+      "k": 20,
+      "offset": 952,
+      "name": "pool"
+    },
+    {
+      "k": 21,
+      "offset": 984,
+      "name": "pool_base_ta"
+    },
+    {
+      "k": 22,
+      "offset": 1016,
+      "name": "pool_quote_ta"
+    },
+    {
+      "k": 23,
+      "offset": 1048,
+      "name": "coin_creator_vault_authority"
+    },
+    {
+      "k": 24,
+      "offset": 1080,
+      "name": "coin_creator_vault_ata"
+    },
+    {
+      "k": 25,
+      "offset": 1112,
+      "name": "amm_user_volume_acc"
+    },
+    {
+      "k": 26,
+      "offset": 1144,
+      "name": "pool_v2"
+    }
+  ],
+  "instructions": [
+    {
+      "op": null,
+      "tail": null,
+      "variable": null,
+      "tag": 0,
+      "name": "initialize",
+      "signer": "upgrade_authority",
+      "accounts": [
+        {
+          "name": "payer",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "config",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "name": "program_data",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "name": "system_program",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "name": "phoenix_global_config",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "name": "ember_state",
+          "writable": false,
+          "signer": false
+        }
+      ],
+      "data": {
+        "size": 201,
+        "fields": [
+          {
+            "name": "tag",
+            "offset": 0,
+            "size": 1,
+            "type": "u8"
+          },
+          {
+            "name": "admin",
+            "offset": 1,
+            "size": 32,
+            "type": "Pubkey"
+          },
+          {
+            "name": "creator_payout",
+            "offset": 33,
+            "size": 32,
+            "type": "Pubkey"
+          },
+          {
+            "name": "quote_mint",
+            "offset": 65,
+            "size": 32,
+            "type": "Pubkey"
+          },
+          {
+            "name": "harvest_params",
+            "offset": 97,
+            "size": 64,
+            "type": "HarvestParams"
+          },
+          {
+            "name": "inflow_params",
+            "offset": 161,
+            "size": 40,
+            "type": "InflowParams"
+          }
+        ]
+      }
+    },
+    {
+      "op": null,
+      "tail": null,
+      "variable": null,
+      "tag": 1,
+      "name": "set_token_mint",
+      "signer": "admin",
+      "accounts": [
+        {
+          "name": "admin",
+          "writable": false,
+          "signer": true
+        },
+        {
+          "name": "config",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "name": "token_mint",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "name": "sharing_config",
+          "writable": false,
+          "signer": false
+        }
+      ],
+      "data": {
+        "size": 1,
+        "fields": [
+          {
+            "name": "tag",
+            "offset": 0,
+            "size": 1,
+            "type": "u8"
+          }
+        ]
+      }
+    },
+    {
+      "op": null,
+      "tail": null,
+      "variable": null,
+      "tag": 2,
+      "name": "register_phoenix_trader",
+      "signer": "admin",
+      "accounts": [
+        {
+          "name": "admin",
+          "writable": false,
+          "signer": true
+        },
+        {
+          "name": "config",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "name": "phx_authority",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "name": "rent_payer",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "name": "phoenix_program",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "name": "log_authority",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "name": "global_config",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "name": "trader_account",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "name": "system_program",
+          "writable": false,
+          "signer": false
+        }
+      ],
+      "data": {
+        "size": 2,
+        "fields": [
+          {
+            "name": "tag",
+            "offset": 0,
+            "size": 1,
+            "type": "u8"
+          },
+          {
+            "name": "trader_bump",
+            "offset": 1,
+            "size": 1,
+            "type": "u8"
+          }
+        ]
+      }
+    },
+    {
+      "op": null,
+      "tail": null,
+      "variable": null,
+      "tag": 3,
+      "name": "set_trader",
+      "signer": "admin",
+      "accounts": [
+        {
+          "name": "admin",
+          "writable": false,
+          "signer": true
+        },
+        {
+          "name": "config",
+          "writable": true,
+          "signer": false
+        }
+      ],
+      "data": {
+        "size": 33,
+        "fields": [
+          {
+            "name": "tag",
+            "offset": 0,
+            "size": 1,
+            "type": "u8"
+          },
+          {
+            "name": "new_trader",
+            "offset": 1,
+            "size": 32,
+            "type": "Pubkey"
+          }
+        ]
+      }
+    },
+    {
+      "op": null,
+      "tail": null,
+      "variable": null,
+      "tag": 28,
+      "name": "set_keeper",
+      "signer": "admin",
+      "accounts": [
+        {
+          "name": "admin",
+          "writable": false,
+          "signer": true
+        },
+        {
+          "name": "config",
+          "writable": true,
+          "signer": false
+        }
+      ],
+      "data": {
+        "size": 33,
+        "fields": [
+          {
+            "name": "tag",
+            "offset": 0,
+            "size": 1,
+            "type": "u8"
+          },
+          {
+            "name": "new_keeper",
+            "offset": 1,
+            "size": 32,
+            "type": "Pubkey"
+          }
+        ]
+      }
+    },
+    {
+      "op": null,
+      "tail": {
+        "kind": "phoenix",
+        "min": 7,
+        "max": 27
+      },
+      "variable": {
+        "kind": "phoenix_data",
+        "min": 0
+      },
+      "tag": 10,
+      "name": "trade",
+      "signer": "trader",
+      "accounts": [
+        {
+          "name": "trader",
+          "writable": false,
+          "signer": true
+        },
+        {
+          "name": "config",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "name": "phx_authority",
+          "writable": false,
+          "signer": false
+        }
+      ],
+      "data": {
+        "size": 9,
+        "fields": [
+          {
+            "name": "tag",
+            "offset": 0,
+            "size": 1,
+            "type": "u8"
+          },
+          {
+            "name": "phx_disc",
+            "offset": 1,
+            "size": 8,
+            "type": "[u8;8]"
+          }
+        ]
+      }
+    },
+    {
+      "op": null,
+      "tail": {
+        "kind": "route",
+        "min": 1,
+        "max": 64
+      },
+      "variable": {
+        "kind": "jupiter_data",
+        "lengthField": "jup_len",
+        "min": 8,
+        "max": 512
+      },
+      "tag": 20,
+      "name": "swap_sol_to_usdc",
+      "signer": "keeper",
+      "accounts": [
+        {
+          "name": "config",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "name": "fee_inbox",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "name": "swap_authority",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "name": "swap_wsol",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "name": "swap_usdc",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "name": "vault_usdc",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "name": "keeper",
+          "writable": false,
+          "signer": true
+        },
+        {
+          "name": "token_program",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "name": "system_program",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "name": "jupiter_program",
+          "writable": false,
+          "signer": false
+        }
+      ],
+      "data": {
+        "size": 19,
+        "fields": [
+          {
+            "name": "tag",
+            "offset": 0,
+            "size": 1,
+            "type": "u8"
+          },
+          {
+            "name": "amount_in",
+            "offset": 1,
+            "size": 8,
+            "type": "u64"
+          },
+          {
+            "name": "min_out",
+            "offset": 9,
+            "size": 8,
+            "type": "u64"
+          },
+          {
+            "name": "jup_len",
+            "offset": 17,
+            "size": 2,
+            "type": "u16"
+          }
+        ]
+      }
+    },
+    {
+      "op": null,
+      "tail": {
+        "kind": "arenas",
+        "gtiCountOffset": 1,
+        "atbCountOffset": 2,
+        "min": 1,
+        "max": 8,
+        "writable": true
+      },
+      "variable": null,
+      "tag": 21,
+      "name": "deposit_usdc",
+      "signer": "anyone",
+      "accounts": [
+        {
+          "name": "config",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "name": "phx_authority",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "name": "vault_usdc",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "name": "vault_phusd",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "name": "usdc_mint",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "name": "phusd_mint",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "name": "ember_program",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "name": "ember_state",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "name": "ember_vault",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "name": "phoenix_program",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "name": "log_authority",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "name": "global_config",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "name": "trader_account",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "name": "global_vault",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "name": "token_program",
+          "writable": false,
+          "signer": false
+        }
+      ],
+      "data": {
+        "size": 11,
+        "fields": [
+          {
+            "name": "tag",
+            "offset": 0,
+            "size": 1,
+            "type": "u8"
+          },
+          {
+            "name": "gti_count",
+            "offset": 1,
+            "size": 1,
+            "type": "u8"
+          },
+          {
+            "name": "atb_count",
+            "offset": 2,
+            "size": 1,
+            "type": "u8"
+          },
+          {
+            "name": "max_amount",
+            "offset": 3,
+            "size": 8,
+            "type": "u64"
+          }
+        ]
+      }
+    },
+    {
+      "op": null,
+      "tail": null,
+      "variable": null,
+      "tag": 22,
+      "name": "sweep_fee_inbox_usdc",
+      "signer": "anyone",
+      "accounts": [
+        {
+          "name": "config",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "name": "fee_inbox",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "name": "source",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "name": "vault_usdc",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "name": "token_program",
+          "writable": false,
+          "signer": false
+        }
+      ],
+      "data": {
+        "size": 1,
+        "fields": [
+          {
+            "name": "tag",
+            "offset": 0,
+            "size": 1,
+            "type": "u8"
+          }
+        ]
+      }
+    },
+    {
+      "op": null,
+      "tail": null,
+      "variable": null,
+      "tag": 23,
+      "name": "sweep_swap_usdc",
+      "signer": "anyone",
+      "accounts": [
+        {
+          "name": "config",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "name": "swap_authority",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "name": "source",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "name": "vault_usdc",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "name": "token_program",
+          "writable": false,
+          "signer": false
+        }
+      ],
+      "data": {
+        "size": 1,
+        "fields": [
+          {
+            "name": "tag",
+            "offset": 0,
+            "size": 1,
+            "type": "u8"
+          }
+        ]
+      }
+    },
+    {
+      "op": null,
+      "tail": {
+        "kind": "arenas",
+        "gtiCountOffset": 1,
+        "atbCountOffset": 2,
+        "min": 1,
+        "max": 8,
+        "writable": true
+      },
+      "variable": null,
+      "tag": 30,
+      "name": "harvest",
+      "signer": "anyone",
+      "accounts": [
+        {
+          "name": "config",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "name": "phx_authority",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "name": "phoenix_program",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "name": "hawkeye_program",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "name": "ember_program",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "name": "log_authority",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "name": "global_config",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "name": "trader_account",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "name": "perp_asset_map",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "name": "global_vault",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "name": "withdraw_queue",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "name": "usdc_mint",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "name": "phusd_mint",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "name": "vault_phusd",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "name": "vault_usdc",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "name": "ember_state",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "name": "ember_vault",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "name": "token_program",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "name": "creator_escrow_usdc",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "name": "buyback_usdc",
+          "writable": true,
+          "signer": false
+        }
+      ],
+      "data": {
+        "size": 3,
+        "fields": [
+          {
+            "name": "tag",
+            "offset": 0,
+            "size": 1,
+            "type": "u8"
+          },
+          {
+            "name": "gti_count",
+            "offset": 1,
+            "size": 1,
+            "type": "u8"
+          },
+          {
+            "name": "atb_count",
+            "offset": 2,
+            "size": 1,
+            "type": "u8"
+          }
+        ]
+      }
+    },
+    {
+      "op": null,
+      "tail": {
+        "kind": "arenas",
+        "gtiCountOffset": 1,
+        "atbCountOffset": 2,
+        "min": 1,
+        "max": 8,
+        "writable": false
+      },
+      "variable": null,
+      "tag": 31,
+      "name": "harvest_preview",
+      "signer": "anyone",
+      "accounts": [
+        {
+          "name": "config",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "name": "phoenix_program",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "name": "hawkeye_program",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "name": "global_config",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "name": "trader_account",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "name": "perp_asset_map",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "name": "withdraw_queue",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "name": "buyback_usdc",
+          "writable": false,
+          "signer": false
+        }
+      ],
+      "data": {
+        "size": 3,
+        "fields": [
+          {
+            "name": "tag",
+            "offset": 0,
+            "size": 1,
+            "type": "u8"
+          },
+          {
+            "name": "gti_count",
+            "offset": 1,
+            "size": 1,
+            "type": "u8"
+          },
+          {
+            "name": "atb_count",
+            "offset": 2,
+            "size": 1,
+            "type": "u8"
+          }
+        ]
+      },
+      "returnData": "HarvestPreview"
+    },
+    {
+      "op": null,
+      "tail": null,
+      "variable": null,
+      "tag": 32,
+      "name": "pay_creator",
+      "signer": "anyone",
+      "accounts": [
+        {
+          "name": "config",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "name": "creator_escrow",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "name": "creator_escrow_usdc",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "name": "creator_usdc",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "name": "token_program",
+          "writable": false,
+          "signer": false
+        }
+      ],
+      "data": {
+        "size": 1,
+        "fields": [
+          {
+            "name": "tag",
+            "offset": 0,
+            "size": 1,
+            "type": "u8"
+          }
+        ]
+      }
+    },
+    {
+      "op": null,
+      "tail": null,
+      "variable": null,
+      "tag": 40,
+      "name": "bb_init",
+      "signer": "anyone",
+      "accounts": [
+        {
+          "name": "payer",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "config",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "name": "buyback_state",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "name": "buyback_authority",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "name": "swap_authority",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "name": "bb_unwrap",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "name": "system_program",
+          "writable": false,
+          "signer": false
+        }
+      ],
+      "data": {
+        "size": 1,
+        "fields": [
+          {
+            "name": "tag",
+            "offset": 0,
+            "size": 1,
+            "type": "u8"
+          }
+        ]
+      }
+    },
+    {
+      "op": null,
+      "tail": null,
+      "variable": null,
+      "tag": 41,
+      "name": "bb_pin",
+      "signer": "anyone",
+      "accounts": [
+        {
+          "name": "buyback_state",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "name": "config",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "name": "mint",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "name": "bonding_curve",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "name": "pool",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "name": "pool_base_ta",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "name": "pool_quote_ta",
+          "writable": false,
+          "signer": false
+        }
+      ],
+      "data": {
+        "size": 1,
+        "fields": [
+          {
+            "name": "tag",
+            "offset": 0,
+            "size": 1,
+            "type": "u8"
+          }
+        ]
+      }
+    },
+    {
+      "op": null,
+      "tail": null,
+      "variable": null,
+      "tag": 42,
+      "name": "bb_observe",
+      "signer": "anyone",
+      "accounts": [
+        {
+          "name": "buyback_state",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "name": "instructions_sysvar",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "name": "bonding_curve",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "name": "pool",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "name": "pool_base_ta",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "name": "pool_quote_ta",
+          "writable": false,
+          "signer": false
+        }
+      ],
+      "data": {
+        "size": 1,
+        "fields": [
+          {
+            "name": "tag",
+            "offset": 0,
+            "size": 1,
+            "type": "u8"
+          }
+        ]
+      }
+    },
+    {
+      "op": null,
+      "tail": {
+        "kind": "route",
+        "min": 1,
+        "max": 64
+      },
+      "variable": {
+        "kind": "jupiter_data",
+        "lengthField": "jup_len",
+        "min": 8,
+        "max": 512
+      },
+      "tag": 43,
+      "name": "bb_swap_usdc_to_sol",
+      "signer": "keeper",
+      "accounts": [
+        {
+          "name": "buyback_state",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "name": "config",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "name": "instructions_sysvar",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "name": "buyback_authority",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "name": "buyback_usdc",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "name": "swap_authority",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "name": "swap_usdc",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "name": "bb_unwrap",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "name": "native_mint",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "name": "usdc_mint",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "name": "token_program",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "name": "system_program",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "name": "keeper",
+          "writable": false,
+          "signer": true
+        },
+        {
+          "name": "jupiter_program",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "name": "bb_wsol",
+          "writable": false,
+          "signer": false
+        }
+      ],
+      "data": {
+        "size": 19,
+        "fields": [
+          {
+            "name": "tag",
+            "offset": 0,
+            "size": 1,
+            "type": "u8"
+          },
+          {
+            "name": "amount_in",
+            "offset": 1,
+            "size": 8,
+            "type": "u64"
+          },
+          {
+            "name": "min_out",
+            "offset": 9,
+            "size": 8,
+            "type": "u64"
+          },
+          {
+            "name": "jup_len",
+            "offset": 17,
+            "size": 2,
+            "type": "u16"
+          }
+        ]
+      }
+    },
+    {
+      "op": null,
+      "tail": null,
+      "variable": null,
+      "tag": 44,
+      "name": "bb_chunk_curve",
+      "signer": "keeper",
+      "accounts": [
+        {
+          "name": "buyback_state",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "name": "config",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "name": "instructions_sysvar",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "name": "jito_dont_front",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "name": "global",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "name": "base_mint",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "name": "quote_mint",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "name": "base_token_program",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "name": "quote_token_program",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "name": "associated_token_program",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "name": "fee_recipient",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "name": "associated_quote_fee_recipient",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "name": "buyback_fee_recipient",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "name": "associated_quote_buyback_fee_recipient",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "name": "bonding_curve",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "name": "associated_base_bonding_curve",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "name": "associated_quote_bonding_curve",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "name": "user",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "name": "associated_base_user",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "name": "associated_quote_user",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "name": "creator_vault",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "name": "associated_creator_vault",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "name": "sharing_config",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "name": "global_volume_accumulator",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "name": "user_volume_accumulator",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "name": "associated_user_volume_accumulator",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "name": "fee_config",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "name": "fee_program",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "name": "system_program",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "name": "event_authority",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "name": "program",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "name": "keeper",
+          "writable": false,
+          "signer": true
+        }
+      ],
+      "data": {
+        "size": 17,
+        "fields": [
+          {
+            "name": "tag",
+            "offset": 0,
+            "size": 1,
+            "type": "u8"
+          },
+          {
+            "name": "max_quote_in",
+            "offset": 1,
+            "size": 8,
+            "type": "u64"
+          },
+          {
+            "name": "min_out",
+            "offset": 9,
+            "size": 8,
+            "type": "u64"
+          }
+        ]
+      }
+    },
+    {
+      "op": null,
+      "tail": null,
+      "variable": null,
+      "tag": 45,
+      "name": "bb_chunk_amm",
+      "signer": "keeper",
+      "accounts": [
+        {
+          "name": "buyback_state",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "name": "config",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "name": "instructions_sysvar",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "name": "jito_dont_front",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "name": "pool",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "name": "user",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "name": "global_config",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "name": "base_mint",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "name": "quote_mint",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "name": "user_base_token_account",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "name": "user_quote_token_account",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "name": "pool_base_token_account",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "name": "pool_quote_token_account",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "name": "protocol_fee_recipient",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "name": "protocol_fee_recipient_token_account",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "name": "base_token_program",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "name": "quote_token_program",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "name": "system_program",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "name": "associated_token_program",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "name": "event_authority",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "name": "program",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "name": "coin_creator_vault_ata",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "name": "coin_creator_vault_authority",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "name": "global_volume_accumulator",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "name": "user_volume_accumulator",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "name": "fee_config",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "name": "fee_program",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "name": "pool_v2",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "name": "buyback_fee_recipient",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "name": "buyback_fee_recipient_quote_ata",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "name": "keeper",
+          "writable": false,
+          "signer": true
+        }
+      ],
+      "data": {
+        "size": 17,
+        "fields": [
+          {
+            "name": "tag",
+            "offset": 0,
+            "size": 1,
+            "type": "u8"
+          },
+          {
+            "name": "max_quote_in",
+            "offset": 1,
+            "size": 8,
+            "type": "u64"
+          },
+          {
+            "name": "min_out",
+            "offset": 9,
+            "size": 8,
+            "type": "u64"
+          }
+        ]
+      }
+    },
+    {
+      "op": null,
+      "tail": null,
+      "variable": null,
+      "tag": 46,
+      "name": "bb_burn",
+      "signer": "anyone",
+      "accounts": [
+        {
+          "name": "buyback_state",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "name": "buyback_authority",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "name": "buyback_token",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "name": "mint",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "name": "base_token_program",
+          "writable": false,
+          "signer": false
+        }
+      ],
+      "data": {
+        "size": 1,
+        "fields": [
+          {
+            "name": "tag",
+            "offset": 0,
+            "size": 1,
+            "type": "u8"
+          }
+        ]
+      }
+    },
+    {
+      "op": null,
+      "tail": null,
+      "variable": null,
+      "tag": 50,
+      "name": "observe_venue",
+      "signer": "anyone",
+      "accounts": [
+        {
+          "name": "config",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "name": "global_config",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "name": "perp_asset_map",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "name": "phoenix_program",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "name": "phoenix_program_data",
+          "writable": false,
+          "signer": false
+        }
+      ],
+      "data": {
+        "size": 1,
+        "fields": [
+          {
+            "name": "tag",
+            "offset": 0,
+            "size": 1,
+            "type": "u8"
+          }
+        ]
+      }
+    },
+    {
+      "op": 0,
+      "tail": null,
+      "variable": null,
+      "tag": 51,
+      "opOffset": 1,
+      "name": "recover_latch",
+      "signer": "anyone",
+      "accounts": [
+        {
+          "name": "config",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "name": "global_config",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "name": "perp_asset_map",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "name": "phoenix_program",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "name": "phoenix_program_data",
+          "writable": false,
+          "signer": false
+        }
+      ],
+      "data": {
+        "size": 2,
+        "fields": [
+          {
+            "name": "tag",
+            "offset": 0,
+            "size": 1,
+            "type": "u8"
+          },
+          {
+            "name": "op",
+            "offset": 1,
+            "size": 1,
+            "type": "u8"
+          }
+        ]
+      }
+    },
+    {
+      "op": 1,
+      "tail": {
+        "kind": "arenas",
+        "gtiCountOffset": 2,
+        "atbCountOffset": 3,
+        "min": 1,
+        "max": 8,
+        "writable": true
+      },
+      "variable": null,
+      "tag": 51,
+      "opOffset": 1,
+      "name": "recover_withdraw",
+      "signer": "anyone",
+      "accounts": [
+        {
+          "name": "config",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "name": "phx_authority",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "name": "phoenix_program",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "name": "hawkeye_program",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "name": "log_authority",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "name": "global_config",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "name": "trader_account",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "name": "perp_asset_map",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "name": "global_vault",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "name": "withdraw_queue",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "name": "vault_phusd",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "name": "token_program",
+          "writable": false,
+          "signer": false
+        }
+      ],
+      "data": {
+        "size": 12,
+        "fields": [
+          {
+            "name": "tag",
+            "offset": 0,
+            "size": 1,
+            "type": "u8"
+          },
+          {
+            "name": "op",
+            "offset": 1,
+            "size": 1,
+            "type": "u8"
+          },
+          {
+            "name": "gti_count",
+            "offset": 2,
+            "size": 1,
+            "type": "u8"
+          },
+          {
+            "name": "atb_count",
+            "offset": 3,
+            "size": 1,
+            "type": "u8"
+          },
+          {
+            "name": "max_amount",
+            "offset": 4,
+            "size": 8,
+            "type": "u64"
+          }
+        ]
+      }
+    },
+    {
+      "op": 6,
+      "tail": {
+        "kind": "arenas",
+        "gtiCountOffset": 2,
+        "atbCountOffset": 3,
+        "min": 1,
+        "max": 8,
+        "writable": true
+      },
+      "variable": null,
+      "tag": 51,
+      "opOffset": 1,
+      "name": "recover_withdraw_flat",
+      "signer": "anyone",
+      "accounts": [
+        {
+          "name": "config",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "name": "phx_authority",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "name": "phoenix_program",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "name": "log_authority",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "name": "global_config",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "name": "trader_account",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "name": "perp_asset_map",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "name": "global_vault",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "name": "withdraw_queue",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "name": "vault_phusd",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "name": "token_program",
+          "writable": false,
+          "signer": false
+        }
+      ],
+      "data": {
+        "size": 12,
+        "fields": [
+          {
+            "name": "tag",
+            "offset": 0,
+            "size": 1,
+            "type": "u8"
+          },
+          {
+            "name": "op",
+            "offset": 1,
+            "size": 1,
+            "type": "u8"
+          },
+          {
+            "name": "gti_count",
+            "offset": 2,
+            "size": 1,
+            "type": "u8"
+          },
+          {
+            "name": "atb_count",
+            "offset": 3,
+            "size": 1,
+            "type": "u8"
+          },
+          {
+            "name": "max_amount",
+            "offset": 4,
+            "size": 8,
+            "type": "u64"
+          }
+        ]
+      }
+    },
+    {
+      "op": 4,
+      "tail": null,
+      "variable": null,
+      "tag": 51,
+      "opOffset": 1,
+      "name": "recover_unwrap",
+      "signer": "anyone",
+      "accounts": [
+        {
+          "name": "config",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "name": "phx_authority",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "name": "vault_phusd",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "name": "vault_usdc",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "name": "usdc_mint",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "name": "phusd_mint",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "name": "ember_program",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "name": "ember_state",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "name": "ember_vault",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "name": "token_program",
+          "writable": false,
+          "signer": false
+        }
+      ],
+      "data": {
+        "size": 2,
+        "fields": [
+          {
+            "name": "tag",
+            "offset": 0,
+            "size": 1,
+            "type": "u8"
+          },
+          {
+            "name": "op",
+            "offset": 1,
+            "size": 1,
+            "type": "u8"
+          }
+        ]
+      }
+    },
+    {
+      "op": 2,
+      "tail": null,
+      "variable": null,
+      "tag": 51,
+      "opOffset": 1,
+      "name": "recover_send_usdc",
+      "signer": "anyone",
+      "accounts": [
+        {
+          "name": "config",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "name": "phx_authority",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "name": "vault_usdc",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "name": "token_program",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "name": "destination_usdc",
+          "writable": true,
+          "signer": false
+        }
+      ],
+      "data": {
+        "size": 2,
+        "fields": [
+          {
+            "name": "tag",
+            "offset": 0,
+            "size": 1,
+            "type": "u8"
+          },
+          {
+            "name": "op",
+            "offset": 1,
+            "size": 1,
+            "type": "u8"
+          }
+        ]
+      }
+    },
+    {
+      "op": 5,
+      "tail": null,
+      "variable": null,
+      "tag": 51,
+      "opOffset": 1,
+      "name": "recover_send_phusd",
+      "signer": "anyone",
+      "accounts": [
+        {
+          "name": "config",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "name": "phx_authority",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "name": "vault_phusd",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "name": "token_program",
+          "writable": false,
+          "signer": false
+        },
+        {
+          "name": "destination_phusd",
+          "writable": true,
+          "signer": false
+        }
+      ],
+      "data": {
+        "size": 2,
+        "fields": [
+          {
+            "name": "tag",
+            "offset": 0,
+            "size": 1,
+            "type": "u8"
+          },
+          {
+            "name": "op",
+            "offset": 1,
+            "size": 1,
+            "type": "u8"
+          }
+        ]
+      }
+    },
+    {
+      "op": 3,
+      "tail": null,
+      "variable": null,
+      "tag": 51,
+      "opOffset": 1,
+      "name": "recover_send_sol",
+      "signer": "anyone",
+      "accounts": [
+        {
+          "name": "config",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "name": "fee_inbox",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "name": "destination_sol",
+          "writable": true,
+          "signer": false
+        },
+        {
+          "name": "system_program",
+          "writable": false,
+          "signer": false
+        }
+      ],
+      "data": {
+        "size": 2,
+        "fields": [
+          {
+            "name": "tag",
+            "offset": 0,
+            "size": 1,
+            "type": "u8"
+          },
+          {
+            "name": "op",
+            "offset": 1,
+            "size": 1,
+            "type": "u8"
+          }
+        ]
+      }
+    }
+  ],
+  "trade_allowlist": [
+    {
+      "name": "PlaceMarketOrder",
+      "disc": "5a76c0fcc0632791",
+      "tr": 4,
+      "au": "3",
+      "min": 10
+    },
+    {
+      "name": "PlaceLimitOrder",
+      "disc": "6cb021ba92e501c5",
+      "tr": 4,
+      "au": "3",
+      "min": 10
+    },
+    {
+      "name": "PlaceMultiLimitOrder",
+      "disc": "ecd0ddac8de28154",
+      "tr": 4,
+      "au": "3",
+      "min": 10
+    },
+    {
+      "name": "PlaceMultiLimitOrderV2",
+      "disc": "406f28d202b126b2",
+      "tr": 4,
+      "au": "3",
+      "min": 10
+    },
+    {
+      "name": "CancelOrdersById",
+      "disc": "eacc7e5ede168d18",
+      "tr": 4,
+      "au": "3",
+      "min": 10
+    },
+    {
+      "name": "CancelUpTo",
+      "disc": "1ad1f4fd3bafe336",
+      "tr": 4,
+      "au": "3",
+      "min": 10
+    },
+    {
+      "name": "CancelAll",
+      "disc": "62bf4bdc732847ed",
+      "tr": 4,
+      "au": "3",
+      "min": 10
+    },
+    {
+      "name": "CancelAllPlusConditional",
+      "disc": "8eadee7e4f133567",
+      "tr": 4,
+      "au": "3",
+      "min": 11
+    },
+    {
+      "name": "PlaceLimitOrderWithConditionals",
+      "disc": "5f2d44a8e8dad25c",
+      "tr": 4,
+      "au": "3",
+      "min": 13
+    },
+    {
+      "name": "PlaceStopLoss",
+      "disc": "ec2ea442eb5ca289",
+      "tr": 4,
+      "au": "n-3",
+      "min": 13
+    },
+    {
+      "name": "PlacePositionConditionalOrder",
+      "disc": "416c53814cc15c8f",
+      "tr": 4,
+      "au": "n-3",
+      "min": 13
+    },
+    {
+      "name": "PlaceAttachedConditionalOrder",
+      "disc": "2b7588804896657a",
+      "tr": 3,
+      "au": "4",
+      "min": 11
+    },
+    {
+      "name": "CancelConditionalOrder",
+      "disc": "52681933f83642b8",
+      "tr": 3,
+      "au": "4",
+      "min": 7
+    },
+    {
+      "name": "CancelStopLoss",
+      "disc": "78c90a660c096f7e",
+      "tr": 4,
+      "au": "5",
+      "min": 8
+    }
+  ],
+  "max_trade_accounts": 27,
+  "errors": [
+    {
+      "code": 1397358593,
+      "hex": "0x534A0001",
+      "offset": 1,
+      "name": "UnknownInstruction",
+      "class": "bad_args"
+    },
+    {
+      "code": 1397358594,
+      "hex": "0x534A0002",
+      "offset": 2,
+      "name": "InvalidInstructionData",
+      "class": "bad_args"
+    },
+    {
+      "code": 1397358595,
+      "hex": "0x534A0003",
+      "offset": 3,
+      "name": "InvalidAccountCount",
+      "class": "bad_account"
+    },
+    {
+      "code": 1397358596,
+      "hex": "0x534A0004",
+      "offset": 4,
+      "name": "InvalidConfigAccount",
+      "class": "bad_account"
+    },
+    {
+      "code": 1397358597,
+      "hex": "0x534A0005",
+      "offset": 5,
+      "name": "InvalidPda",
+      "class": "bad_account"
+    },
+    {
+      "code": 1397358598,
+      "hex": "0x534A0006",
+      "offset": 6,
+      "name": "InvalidProgramId",
+      "class": "external_id_mismatch"
+    },
+    {
+      "code": 1397358599,
+      "hex": "0x534A0007",
+      "offset": 7,
+      "name": "InvalidExternalAccount",
+      "class": "bad_account"
+    },
+    {
+      "code": 1397358600,
+      "hex": "0x534A0008",
+      "offset": 8,
+      "name": "AccountNotWritable",
+      "class": "bad_account"
+    },
+    {
+      "code": 1397358601,
+      "hex": "0x534A0009",
+      "offset": 9,
+      "name": "AccountMustBeReadonly",
+      "class": "bad_account"
+    },
+    {
+      "code": 1397358602,
+      "hex": "0x534A000A",
+      "offset": 10,
+      "name": "InvalidTokenAccount",
+      "class": "bad_account"
+    },
+    {
+      "code": 1397358603,
+      "hex": "0x534A000B",
+      "offset": 11,
+      "name": "MathOverflow",
+      "class": "other"
+    },
+    {
+      "code": 1397358604,
+      "hex": "0x534A000C",
+      "offset": 12,
+      "name": "InvariantViolated",
+      "class": "invariant"
+    },
+    {
+      "code": 1397358605,
+      "hex": "0x534A000D",
+      "offset": 13,
+      "name": "NotTopLevel",
+      "class": "tx_composition"
+    },
+    {
+      "code": 1397358606,
+      "hex": "0x534A000E",
+      "offset": 14,
+      "name": "ForeignInstruction",
+      "class": "tx_composition"
+    },
+    {
+      "code": 1397358607,
+      "hex": "0x534A000F",
+      "offset": 15,
+      "name": "TraderNotRegistered",
+      "class": "not_ready"
+    },
+    {
+      "code": 1397358608,
+      "hex": "0x534A0010",
+      "offset": 16,
+      "name": "InvalidPhoenixGlobalConfig",
+      "class": "bad_account"
+    },
+    {
+      "code": 1397358609,
+      "hex": "0x534A0011",
+      "offset": 17,
+      "name": "InvalidPerpAssetMap",
+      "class": "bad_account"
+    },
+    {
+      "code": 1397358610,
+      "hex": "0x534A0012",
+      "offset": 18,
+      "name": "InvalidPhoenixTraderAccount",
+      "class": "bad_account"
+    },
+    {
+      "code": 1397358611,
+      "hex": "0x534A0013",
+      "offset": 19,
+      "name": "InvalidArenaAccounts",
+      "class": "bad_account"
+    },
+    {
+      "code": 1397358612,
+      "hex": "0x534A0014",
+      "offset": 20,
+      "name": "InvalidEmberAccount",
+      "class": "bad_account"
+    },
+    {
+      "code": 1397358613,
+      "hex": "0x534A0015",
+      "offset": 21,
+      "name": "HawkeyeReturnInvalid",
+      "class": "hawkeye_unavailable"
+    },
+    {
+      "code": 1397358615,
+      "hex": "0x534A0017",
+      "offset": 23,
+      "name": "InvalidBuybackState",
+      "class": "bad_account"
+    },
+    {
+      "code": 1397358656,
+      "hex": "0x534A0040",
+      "offset": 64,
+      "name": "Unauthorized",
+      "class": "admin"
+    },
+    {
+      "code": 1397358660,
+      "hex": "0x534A0044",
+      "offset": 68,
+      "name": "NotUpgradeAuthority",
+      "class": "admin"
+    },
+    {
+      "code": 1397358661,
+      "hex": "0x534A0045",
+      "offset": 69,
+      "name": "ConfigAlreadyInitialized",
+      "class": "already_done"
+    },
+    {
+      "code": 1397358662,
+      "hex": "0x534A0046",
+      "offset": 70,
+      "name": "InvalidQuoteMint",
+      "class": "bad_args"
+    },
+    {
+      "code": 1397358663,
+      "hex": "0x534A0047",
+      "offset": 71,
+      "name": "InvalidParams",
+      "class": "bad_args"
+    },
+    {
+      "code": 1397358664,
+      "hex": "0x534A0048",
+      "offset": 72,
+      "name": "TokenMintAlreadySet",
+      "class": "already_done"
+    },
+    {
+      "code": 1397358665,
+      "hex": "0x534A0049",
+      "offset": 73,
+      "name": "InvalidTokenMint",
+      "class": "bad_account"
+    },
+    {
+      "code": 1397358666,
+      "hex": "0x534A004A",
+      "offset": 74,
+      "name": "InvalidSharingConfig",
+      "class": "bad_account"
+    },
+    {
+      "code": 1397358667,
+      "hex": "0x534A004B",
+      "offset": 75,
+      "name": "TraderAlreadyRegistered",
+      "class": "already_done"
+    },
+    {
+      "code": 1397358668,
+      "hex": "0x534A004C",
+      "offset": 76,
+      "name": "InvalidPhoenixTraderPda",
+      "class": "bad_account"
+    },
+    {
+      "code": 1397358669,
+      "hex": "0x534A004D",
+      "offset": 77,
+      "name": "RentPayerUnderfunded",
+      "class": "not_ready"
+    },
+    {
+      "code": 1397358848,
+      "hex": "0x534A0100",
+      "offset": 256,
+      "name": "UnauthorizedTrader",
+      "class": "not_trader"
+    },
+    {
+      "code": 1397358875,
+      "hex": "0x534A011B",
+      "offset": 283,
+      "name": "PositionAssetUnresolved",
+      "class": "market_changed"
+    },
+    {
+      "code": 1397358879,
+      "hex": "0x534A011F",
+      "offset": 287,
+      "name": "TradeInstructionNotAllowed",
+      "class": "bad_args"
+    },
+    {
+      "code": 1397358880,
+      "hex": "0x534A0120",
+      "offset": 288,
+      "name": "InvalidTradeAccounts",
+      "class": "bad_account"
+    },
+    {
+      "code": 1397358881,
+      "hex": "0x534A0121",
+      "offset": 289,
+      "name": "ForbiddenTradeAccount",
+      "class": "bad_account"
+    },
+    {
+      "code": 1397359105,
+      "hex": "0x534A0201",
+      "offset": 513,
+      "name": "SwapTooSoon",
+      "class": "interval"
+    },
+    {
+      "code": 1397359106,
+      "hex": "0x534A0202",
+      "offset": 514,
+      "name": "SwapAmountInvalid",
+      "class": "bad_args"
+    },
+    {
+      "code": 1397359107,
+      "hex": "0x534A0203",
+      "offset": 515,
+      "name": "FeeInboxInsufficient",
+      "class": "nothing_to_do"
+    },
+    {
+      "code": 1397359108,
+      "hex": "0x534A0204",
+      "offset": 516,
+      "name": "JupiterTooManyAccounts",
+      "class": "route_rejected"
+    },
+    {
+      "code": 1397359109,
+      "hex": "0x534A0205",
+      "offset": 517,
+      "name": "JupiterIxForbidden",
+      "class": "route_rejected"
+    },
+    {
+      "code": 1397359110,
+      "hex": "0x534A0206",
+      "offset": 518,
+      "name": "JupiterArgsMismatch",
+      "class": "route_rejected"
+    },
+    {
+      "code": 1397359111,
+      "hex": "0x534A0207",
+      "offset": 519,
+      "name": "JupiterRoutePinMismatch",
+      "class": "route_rejected"
+    },
+    {
+      "code": 1397359112,
+      "hex": "0x534A0208",
+      "offset": 520,
+      "name": "JupiterAccountForbidden",
+      "class": "route_rejected"
+    },
+    {
+      "code": 1397359113,
+      "hex": "0x534A0209",
+      "offset": 521,
+      "name": "SwapNoop",
+      "class": "route_rejected"
+    },
+    {
+      "code": 1397359114,
+      "hex": "0x534A020A",
+      "offset": 522,
+      "name": "SwapInputExceeded",
+      "class": "route_rejected"
+    },
+    {
+      "code": 1397359115,
+      "hex": "0x534A020B",
+      "offset": 523,
+      "name": "SwapOutputBelowMin",
+      "class": "slippage"
+    },
+    {
+      "code": 1397359116,
+      "hex": "0x534A020C",
+      "offset": 524,
+      "name": "SwapAccountTampered",
+      "class": "route_rejected"
+    },
+    {
+      "code": 1397359119,
+      "hex": "0x534A020F",
+      "offset": 527,
+      "name": "DepositNothing",
+      "class": "nothing_to_do"
+    },
+    {
+      "code": 1397359120,
+      "hex": "0x534A0210",
+      "offset": 528,
+      "name": "EmberWrapMismatch",
+      "class": "invariant"
+    },
+    {
+      "code": 1397359121,
+      "hex": "0x534A0211",
+      "offset": 529,
+      "name": "DepositNotSettled",
+      "class": "invariant"
+    },
+    {
+      "code": 1397359122,
+      "hex": "0x534A0212",
+      "offset": 530,
+      "name": "SweepNothing",
+      "class": "nothing_to_do"
+    },
+    {
+      "code": 1397359123,
+      "hex": "0x534A0213",
+      "offset": 531,
+      "name": "DepositQuietWindow",
+      "class": "interval"
+    },
+    {
+      "code": 1397359124,
+      "hex": "0x534A0214",
+      "offset": 532,
+      "name": "UnauthorizedKeeper",
+      "class": "not_keeper"
+    },
+    {
+      "code": 1397359360,
+      "hex": "0x534A0300",
+      "offset": 768,
+      "name": "HarvestTooEarly",
+      "class": "too_early"
+    },
+    {
+      "code": 1397359361,
+      "hex": "0x534A0301",
+      "offset": 769,
+      "name": "HarvestBelowMinimum",
+      "class": "nothing_to_harvest"
+    },
+    {
+      "code": 1397359362,
+      "hex": "0x534A0302",
+      "offset": 770,
+      "name": "HarvestRiskState",
+      "class": "nothing_to_harvest"
+    },
+    {
+      "code": 1397359363,
+      "hex": "0x534A0303",
+      "offset": 771,
+      "name": "WithdrawNotImmediate",
+      "class": "withdraw_not_immediate"
+    },
+    {
+      "code": 1397359364,
+      "hex": "0x534A0304",
+      "offset": 772,
+      "name": "WithdrawAmountMismatch",
+      "class": "invariant"
+    },
+    {
+      "code": 1397359365,
+      "hex": "0x534A0305",
+      "offset": 773,
+      "name": "EmberAmountMismatch",
+      "class": "invariant"
+    },
+    {
+      "code": 1397359366,
+      "hex": "0x534A0306",
+      "offset": 774,
+      "name": "CreatorAtaInvalid",
+      "class": "not_ready"
+    },
+    {
+      "code": 1397359367,
+      "hex": "0x534A0307",
+      "offset": 775,
+      "name": "BuybackAtaInvalid",
+      "class": "not_ready"
+    },
+    {
+      "code": 1397359368,
+      "hex": "0x534A0308",
+      "offset": 776,
+      "name": "HarvestBuybackBacklog",
+      "class": "not_ready"
+    },
+    {
+      "code": 1397359369,
+      "hex": "0x534A0309",
+      "offset": 777,
+      "name": "WithdrawQueueBusy",
+      "class": "withdraw_not_immediate"
+    },
+    {
+      "code": 1397359370,
+      "hex": "0x534A030A",
+      "offset": 778,
+      "name": "WithdrawCooldown",
+      "class": "too_early"
+    },
+    {
+      "code": 1397359371,
+      "hex": "0x534A030B",
+      "offset": 779,
+      "name": "HarvestMarkStale",
+      "class": "mark_stale"
+    },
+    {
+      "code": 1397359372,
+      "hex": "0x534A030C",
+      "offset": 780,
+      "name": "CreatorEscrowInvalid",
+      "class": "not_ready"
+    },
+    {
+      "code": 1397359373,
+      "hex": "0x534A030D",
+      "offset": 781,
+      "name": "CreatorPayNothing",
+      "class": "nothing_to_do"
+    },
+    {
+      "code": 1397359616,
+      "hex": "0x534A0400",
+      "offset": 1024,
+      "name": "BbAlreadyInitialized",
+      "class": "already_done"
+    },
+    {
+      "code": 1397359617,
+      "hex": "0x534A0401",
+      "offset": 1025,
+      "name": "BbMintNotSet",
+      "class": "not_ready"
+    },
+    {
+      "code": 1397359618,
+      "hex": "0x534A0402",
+      "offset": 1026,
+      "name": "BbAlreadyPinned",
+      "class": "already_done"
+    },
+    {
+      "code": 1397359619,
+      "hex": "0x534A0403",
+      "offset": 1027,
+      "name": "BbNotPinned",
+      "class": "not_ready"
+    },
+    {
+      "code": 1397359620,
+      "hex": "0x534A0404",
+      "offset": 1028,
+      "name": "BbBadPumpAccount",
+      "class": "bad_account"
+    },
+    {
+      "code": 1397359621,
+      "hex": "0x534A0405",
+      "offset": 1029,
+      "name": "BbPinnedAccountMismatch",
+      "class": "bad_account"
+    },
+    {
+      "code": 1397359622,
+      "hex": "0x534A0406",
+      "offset": 1030,
+      "name": "BbWrongQuote",
+      "class": "bad_account"
+    },
+    {
+      "code": 1397359623,
+      "hex": "0x534A0407",
+      "offset": 1031,
+      "name": "BbCoinFlagsUnexpected",
+      "class": "bad_account"
+    },
+    {
+      "code": 1397359624,
+      "hex": "0x534A0408",
+      "offset": 1032,
+      "name": "BbCreatorNotSharing",
+      "class": "bad_account"
+    },
+    {
+      "code": 1397359625,
+      "hex": "0x534A0409",
+      "offset": 1033,
+      "name": "BbPoolNotReady",
+      "class": "not_ready"
+    },
+    {
+      "code": 1397359626,
+      "hex": "0x534A040A",
+      "offset": 1034,
+      "name": "BbVenueMismatch",
+      "class": "not_ready"
+    },
+    {
+      "code": 1397359627,
+      "hex": "0x534A040B",
+      "offset": 1035,
+      "name": "BbVenueSwitchPending",
+      "class": "not_ready"
+    },
+    {
+      "code": 1397359628,
+      "hex": "0x534A040C",
+      "offset": 1036,
+      "name": "BbMissingDontFront",
+      "class": "tx_composition"
+    },
+    {
+      "code": 1397359630,
+      "hex": "0x534A040E",
+      "offset": 1038,
+      "name": "BbObserveTooSoon",
+      "class": "interval"
+    },
+    {
+      "code": 1397359631,
+      "hex": "0x534A040F",
+      "offset": 1039,
+      "name": "BbWarmup",
+      "class": "warmup"
+    },
+    {
+      "code": 1397359632,
+      "hex": "0x534A0410",
+      "offset": 1040,
+      "name": "BbSameSlot",
+      "class": "interval"
+    },
+    {
+      "code": 1397359633,
+      "hex": "0x534A0411",
+      "offset": 1041,
+      "name": "BbStaleObservation",
+      "class": "warmup"
+    },
+    {
+      "code": 1397359634,
+      "hex": "0x534A0412",
+      "offset": 1042,
+      "name": "BbBuyTooSoon",
+      "class": "interval"
+    },
+    {
+      "code": 1397359635,
+      "hex": "0x534A0413",
+      "offset": 1043,
+      "name": "BbReserveAnomaly",
+      "class": "guard"
+    },
+    {
+      "code": 1397359637,
+      "hex": "0x534A0415",
+      "offset": 1045,
+      "name": "BbChunkBelowMin",
+      "class": "nothing_to_do"
+    },
+    {
+      "code": 1397359638,
+      "hex": "0x534A0416",
+      "offset": 1046,
+      "name": "BbCurveNearComplete",
+      "class": "guard"
+    },
+    {
+      "code": 1397359639,
+      "hex": "0x534A0417",
+      "offset": 1047,
+      "name": "BbExpectedOutBelowMin",
+      "class": "slippage"
+    },
+    {
+      "code": 1397359640,
+      "hex": "0x534A0418",
+      "offset": 1048,
+      "name": "BbFloatLow",
+      "class": "not_ready"
+    },
+    {
+      "code": 1397359641,
+      "hex": "0x534A0419",
+      "offset": 1049,
+      "name": "BbBaseAtaMissing",
+      "class": "not_ready"
+    },
+    {
+      "code": 1397359642,
+      "hex": "0x534A041A",
+      "offset": 1050,
+      "name": "BbQuoteAtaMissing",
+      "class": "not_ready"
+    },
+    {
+      "code": 1397359643,
+      "hex": "0x534A041B",
+      "offset": 1051,
+      "name": "BbOverspend",
+      "class": "invariant"
+    },
+    {
+      "code": 1397359644,
+      "hex": "0x534A041C",
+      "offset": 1052,
+      "name": "BbSlippage",
+      "class": "slippage"
+    },
+    {
+      "code": 1397359645,
+      "hex": "0x534A041D",
+      "offset": 1053,
+      "name": "BbBurnIncomplete",
+      "class": "invariant"
+    },
+    {
+      "code": 1397359646,
+      "hex": "0x534A041E",
+      "offset": 1054,
+      "name": "BbNotSolPair",
+      "class": "bad_args"
+    },
+    {
+      "code": 1397359647,
+      "hex": "0x534A041F",
+      "offset": 1055,
+      "name": "BbSwapTooSoon",
+      "class": "interval"
+    },
+    {
+      "code": 1397359648,
+      "hex": "0x534A0420",
+      "offset": 1056,
+      "name": "BbSolBudgetFull",
+      "class": "nothing_to_do"
+    },
+    {
+      "code": 1397359649,
+      "hex": "0x534A0421",
+      "offset": 1057,
+      "name": "BbSwapAmountInvalid",
+      "class": "bad_args"
+    },
+    {
+      "code": 1397359650,
+      "hex": "0x534A0422",
+      "offset": 1058,
+      "name": "BbUnwrapAccountBusy",
+      "class": "invariant"
+    },
+    {
+      "code": 1397359651,
+      "hex": "0x534A0423",
+      "offset": 1059,
+      "name": "BbAccountTampered",
+      "class": "invariant"
+    },
+    {
+      "code": 1397359872,
+      "hex": "0x534A0500",
+      "offset": 1280,
+      "name": "RecoveryActive",
+      "class": "recovery"
+    },
+    {
+      "code": 1397359873,
+      "hex": "0x534A0501",
+      "offset": 1281,
+      "name": "RecoveryNotActive",
+      "class": "not_ready"
+    },
+    {
+      "code": 1397359874,
+      "hex": "0x534A0502",
+      "offset": 1282,
+      "name": "RecoveryAlreadyActive",
+      "class": "already_done"
+    },
+    {
+      "code": 1397359875,
+      "hex": "0x534A0503",
+      "offset": 1283,
+      "name": "VenueNotDown",
+      "class": "too_early"
+    },
+    {
+      "code": 1397359876,
+      "hex": "0x534A0504",
+      "offset": 1284,
+      "name": "VenueDownTooShort",
+      "class": "too_early"
+    },
+    {
+      "code": 1397359877,
+      "hex": "0x534A0505",
+      "offset": 1285,
+      "name": "VenueObserveTooSoon",
+      "class": "interval"
+    },
+    {
+      "code": 1397359878,
+      "hex": "0x534A0506",
+      "offset": 1286,
+      "name": "RecoveryNothing",
+      "class": "nothing_to_do"
+    },
+    {
+      "code": 1397359879,
+      "hex": "0x534A0507",
+      "offset": 1287,
+      "name": "RecoveryBelowMinimum",
+      "class": "withdraw_not_immediate"
+    },
+    {
+      "code": 1397359880,
+      "hex": "0x534A0508",
+      "offset": 1288,
+      "name": "RecoveryRecipientInvalid",
+      "class": "not_ready"
+    },
+    {
+      "code": 1397359882,
+      "hex": "0x534A050A",
+      "offset": 1290,
+      "name": "RecoveryAlreadyQueued",
+      "class": "withdraw_not_immediate"
+    },
+    {
+      "code": 1397359883,
+      "hex": "0x534A050B",
+      "offset": 1291,
+      "name": "RecoveryEnqueueTooSoon",
+      "class": "interval"
+    },
+    {
+      "code": 1397359884,
+      "hex": "0x534A050C",
+      "offset": 1292,
+      "name": "RecoveryNotFlat",
+      "class": "not_ready"
+    },
+    {
+      "code": 1397359885,
+      "hex": "0x534A050D",
+      "offset": 1293,
+      "name": "RecoverySwapRestricted",
+      "class": "bad_args"
+    }
+  ],
+  "events": [
+    {
+      "tag": "SJKEVINI",
+      "when": "тег 0",
+      "size": 179,
+      "fields": [
+        {
+          "name": "tag",
+          "offset": 0,
+          "size": 8,
+          "type": "[u8;8]"
+        },
+        {
+          "name": "ver",
+          "offset": 8,
+          "size": 1,
+          "type": "u8"
+        },
+        {
+          "name": "ts",
+          "offset": 9,
+          "size": 8,
+          "type": "i64"
+        },
+        {
+          "name": "admin",
+          "offset": 17,
+          "size": 32,
+          "type": "Pubkey"
+        },
+        {
+          "name": "creator_payout",
+          "offset": 49,
+          "size": 32,
+          "type": "Pubkey"
+        },
+        {
+          "name": "quote_mint",
+          "offset": 81,
+          "size": 32,
+          "type": "Pubkey"
+        },
+        {
+          "name": "usdc_mint",
+          "offset": 113,
+          "size": 32,
+          "type": "Pubkey"
+        },
+        {
+          "name": "phusd_mint",
+          "offset": 145,
+          "size": 32,
+          "type": "Pubkey"
+        },
+        {
+          "name": "config_version",
+          "offset": 177,
+          "size": 2,
+          "type": "u16"
+        }
+      ]
+    },
+    {
+      "tag": "SJKEVMNT",
+      "when": "тег 1",
+      "size": 146,
+      "fields": [
+        {
+          "name": "tag",
+          "offset": 0,
+          "size": 8,
+          "type": "[u8;8]"
+        },
+        {
+          "name": "ver",
+          "offset": 8,
+          "size": 1,
+          "type": "u8"
+        },
+        {
+          "name": "ts",
+          "offset": 9,
+          "size": 8,
+          "type": "i64"
+        },
+        {
+          "name": "token_mint",
+          "offset": 17,
+          "size": 32,
+          "type": "Pubkey"
+        },
+        {
+          "name": "token_program",
+          "offset": 49,
+          "size": 32,
+          "type": "Pubkey"
+        },
+        {
+          "name": "decimals",
+          "offset": 81,
+          "size": 1,
+          "type": "u8"
+        },
+        {
+          "name": "sharing_config",
+          "offset": 82,
+          "size": 32,
+          "type": "Pubkey"
+        },
+        {
+          "name": "buyback_token",
+          "offset": 114,
+          "size": 32,
+          "type": "Pubkey"
+        }
+      ]
+    },
+    {
+      "tag": "SJKEVREG",
+      "when": "тег 2",
+      "size": 94,
+      "fields": [
+        {
+          "name": "tag",
+          "offset": 0,
+          "size": 8,
+          "type": "[u8;8]"
+        },
+        {
+          "name": "ver",
+          "offset": 8,
+          "size": 1,
+          "type": "u8"
+        },
+        {
+          "name": "ts",
+          "offset": 9,
+          "size": 8,
+          "type": "i64"
+        },
+        {
+          "name": "phoenix_trader",
+          "offset": 17,
+          "size": 32,
+          "type": "Pubkey"
+        },
+        {
+          "name": "prefs",
+          "offset": 49,
+          "size": 4,
+          "type": "u32"
+        },
+        {
+          "name": "max_positions",
+          "offset": 53,
+          "size": 4,
+          "type": "u32"
+        },
+        {
+          "name": "created_by_program",
+          "offset": 57,
+          "size": 1,
+          "type": "u8"
+        },
+        {
+          "name": "funding_key",
+          "offset": 58,
+          "size": 32,
+          "type": "Pubkey"
+        },
+        {
+          "name": "flags",
+          "offset": 90,
+          "size": 4,
+          "type": "u32"
+        }
+      ]
+    },
+    {
+      "tag": "SJKEVTRD",
+      "when": "тег 3",
+      "size": 81,
+      "fields": [
+        {
+          "name": "tag",
+          "offset": 0,
+          "size": 8,
+          "type": "[u8;8]"
+        },
+        {
+          "name": "ver",
+          "offset": 8,
+          "size": 1,
+          "type": "u8"
+        },
+        {
+          "name": "ts",
+          "offset": 9,
+          "size": 8,
+          "type": "i64"
+        },
+        {
+          "name": "old",
+          "offset": 17,
+          "size": 32,
+          "type": "Pubkey"
+        },
+        {
+          "name": "new",
+          "offset": 49,
+          "size": 32,
+          "type": "Pubkey"
+        }
+      ]
+    },
+    {
+      "tag": "SJKEVSWI",
+      "when": "тег 20",
+      "size": 90,
+      "fields": [
+        {
+          "name": "tag",
+          "offset": 0,
+          "size": 8,
+          "type": "[u8;8]"
+        },
+        {
+          "name": "ver",
+          "offset": 8,
+          "size": 1,
+          "type": "u8"
+        },
+        {
+          "name": "ts",
+          "offset": 9,
+          "size": 8,
+          "type": "i64"
+        },
+        {
+          "name": "jup_kind",
+          "offset": 17,
+          "size": 1,
+          "type": "u8"
+        },
+        {
+          "name": "slot",
+          "offset": 18,
+          "size": 8,
+          "type": "u64"
+        },
+        {
+          "name": "amount_in",
+          "offset": 26,
+          "size": 8,
+          "type": "u64"
+        },
+        {
+          "name": "spent",
+          "offset": 34,
+          "size": 8,
+          "type": "u64"
+        },
+        {
+          "name": "received",
+          "offset": 42,
+          "size": 8,
+          "type": "u64"
+        },
+        {
+          "name": "min_out",
+          "offset": 50,
+          "size": 8,
+          "type": "u64"
+        },
+        {
+          "name": "topup",
+          "offset": 58,
+          "size": 8,
+          "type": "u64"
+        },
+        {
+          "name": "fee_inbox_after",
+          "offset": 66,
+          "size": 8,
+          "type": "u64"
+        },
+        {
+          "name": "wsol_left",
+          "offset": 74,
+          "size": 8,
+          "type": "u64"
+        },
+        {
+          "name": "swap_count",
+          "offset": 82,
+          "size": 8,
+          "type": "u64"
+        }
+      ]
+    },
+    {
+      "tag": "SJKEVDEP",
+      "when": "тег 21",
+      "size": 97,
+      "fields": [
+        {
+          "name": "tag",
+          "offset": 0,
+          "size": 8,
+          "type": "[u8;8]"
+        },
+        {
+          "name": "ver",
+          "offset": 8,
+          "size": 1,
+          "type": "u8"
+        },
+        {
+          "name": "ts",
+          "offset": 9,
+          "size": 8,
+          "type": "i64"
+        },
+        {
+          "name": "slot",
+          "offset": 17,
+          "size": 8,
+          "type": "u64"
+        },
+        {
+          "name": "usdc_wrapped",
+          "offset": 25,
+          "size": 8,
+          "type": "u64"
+        },
+        {
+          "name": "phusd_direct",
+          "offset": 33,
+          "size": 8,
+          "type": "u64"
+        },
+        {
+          "name": "deposited",
+          "offset": 41,
+          "size": 8,
+          "type": "u64"
+        },
+        {
+          "name": "I_after",
+          "offset": 49,
+          "size": 8,
+          "type": "u64"
+        },
+        {
+          "name": "collateral_before",
+          "offset": 57,
+          "size": 8,
+          "type": "i64"
+        },
+        {
+          "name": "collateral_after",
+          "offset": 65,
+          "size": 8,
+          "type": "i64"
+        },
+        {
+          "name": "deposit_count",
+          "offset": 73,
+          "size": 8,
+          "type": "u64"
+        },
+        {
+          "name": "ember_fee",
+          "offset": 81,
+          "size": 8,
+          "type": "u64"
+        },
+        {
+          "name": "max_amount",
+          "offset": 89,
+          "size": 8,
+          "type": "u64"
+        }
+      ]
+    },
+    {
+      "tag": "SJKEVSFU",
+      "when": "тег 22",
+      "size": 65,
+      "fields": [
+        {
+          "name": "tag",
+          "offset": 0,
+          "size": 8,
+          "type": "[u8;8]"
+        },
+        {
+          "name": "ver",
+          "offset": 8,
+          "size": 1,
+          "type": "u8"
+        },
+        {
+          "name": "ts",
+          "offset": 9,
+          "size": 8,
+          "type": "i64"
+        },
+        {
+          "name": "slot",
+          "offset": 17,
+          "size": 8,
+          "type": "u64"
+        },
+        {
+          "name": "source",
+          "offset": 25,
+          "size": 32,
+          "type": "Pubkey"
+        },
+        {
+          "name": "amount",
+          "offset": 57,
+          "size": 8,
+          "type": "u64"
+        }
+      ]
+    },
+    {
+      "tag": "SJKEVSSU",
+      "when": "тег 23",
+      "size": 65,
+      "fields": [
+        {
+          "name": "tag",
+          "offset": 0,
+          "size": 8,
+          "type": "[u8;8]"
+        },
+        {
+          "name": "ver",
+          "offset": 8,
+          "size": 1,
+          "type": "u8"
+        },
+        {
+          "name": "ts",
+          "offset": 9,
+          "size": 8,
+          "type": "i64"
+        },
+        {
+          "name": "slot",
+          "offset": 17,
+          "size": 8,
+          "type": "u64"
+        },
+        {
+          "name": "source",
+          "offset": 25,
+          "size": 32,
+          "type": "Pubkey"
+        },
+        {
+          "name": "amount",
+          "offset": 57,
+          "size": 8,
+          "type": "u64"
+        }
+      ]
+    },
+    {
+      "tag": "SJKEVKPR",
+      "when": "тег 28",
+      "size": 81,
+      "fields": [
+        {
+          "name": "tag",
+          "offset": 0,
+          "size": 8,
+          "type": "[u8;8]"
+        },
+        {
+          "name": "ver",
+          "offset": 8,
+          "size": 1,
+          "type": "u8"
+        },
+        {
+          "name": "ts",
+          "offset": 9,
+          "size": 8,
+          "type": "i64"
+        },
+        {
+          "name": "old",
+          "offset": 17,
+          "size": 32,
+          "type": "Pubkey"
+        },
+        {
+          "name": "new",
+          "offset": 49,
+          "size": 32,
+          "type": "Pubkey"
+        }
+      ]
+    },
+    {
+      "tag": "SJKEVHRV",
+      "when": "тег 30 (и return data тега 30)",
+      "size": 164,
+      "fields": [
+        {
+          "name": "tag",
+          "offset": 0,
+          "size": 8,
+          "type": "[u8;8]"
+        },
+        {
+          "name": "ver",
+          "offset": 8,
+          "size": 1,
+          "type": "u8"
+        },
+        {
+          "name": "ts",
+          "offset": 9,
+          "size": 8,
+          "type": "i64"
+        },
+        {
+          "name": "slot",
+          "offset": 17,
+          "size": 8,
+          "type": "u64"
+        },
+        {
+          "name": "I",
+          "offset": 25,
+          "size": 8,
+          "type": "u64"
+        },
+        {
+          "name": "O_after",
+          "offset": 33,
+          "size": 8,
+          "type": "u64"
+        },
+        {
+          "name": "C_hk",
+          "offset": 41,
+          "size": 8,
+          "type": "i64"
+        },
+        {
+          "name": "C_hdr",
+          "offset": 49,
+          "size": 8,
+          "type": "i64"
+        },
+        {
+          "name": "U",
+          "offset": 57,
+          "size": 8,
+          "type": "i64"
+        },
+        {
+          "name": "F",
+          "offset": 65,
+          "size": 8,
+          "type": "i64"
+        },
+        {
+          "name": "D_star",
+          "offset": 73,
+          "size": 8,
+          "type": "i64"
+        },
+        {
+          "name": "W",
+          "offset": 81,
+          "size": 8,
+          "type": "u64"
+        },
+        {
+          "name": "buf",
+          "offset": 89,
+          "size": 8,
+          "type": "u64"
+        },
+        {
+          "name": "IM",
+          "offset": 97,
+          "size": 8,
+          "type": "u64"
+        },
+        {
+          "name": "D",
+          "offset": 105,
+          "size": 8,
+          "type": "u64"
+        },
+        {
+          "name": "r",
+          "offset": 113,
+          "size": 8,
+          "type": "u64"
+        },
+        {
+          "name": "creator",
+          "offset": 121,
+          "size": 8,
+          "type": "u64"
+        },
+        {
+          "name": "buyback",
+          "offset": 129,
+          "size": 8,
+          "type": "u64"
+        },
+        {
+          "name": "harvest_count",
+          "offset": 137,
+          "size": 8,
+          "type": "u64"
+        },
+        {
+          "name": "position_count",
+          "offset": 145,
+          "size": 2,
+          "type": "u16"
+        },
+        {
+          "name": "usdc_received",
+          "offset": 147,
+          "size": 8,
+          "type": "u64"
+        },
+        {
+          "name": "queue_cap",
+          "offset": 155,
+          "size": 8,
+          "type": "u64"
+        },
+        {
+          "name": "bits",
+          "offset": 163,
+          "size": 1,
+          "type": "u8"
+        }
+      ]
+    },
+    {
+      "tag": "SJKEVPCR",
+      "when": "тег 32",
+      "size": 49,
+      "fields": [
+        {
+          "name": "tag",
+          "offset": 0,
+          "size": 8,
+          "type": "[u8;8]"
+        },
+        {
+          "name": "ver",
+          "offset": 8,
+          "size": 1,
+          "type": "u8"
+        },
+        {
+          "name": "ts",
+          "offset": 9,
+          "size": 8,
+          "type": "i64"
+        },
+        {
+          "name": "slot",
+          "offset": 17,
+          "size": 8,
+          "type": "u64"
+        },
+        {
+          "name": "amount",
+          "offset": 25,
+          "size": 8,
+          "type": "u64"
+        },
+        {
+          "name": "cum_creator_paid_out",
+          "offset": 33,
+          "size": 8,
+          "type": "u64"
+        },
+        {
+          "name": "cum_payout_creator",
+          "offset": 41,
+          "size": 8,
+          "type": "u64"
+        }
+      ]
+    },
+    {
+      "tag": "SJKEVBIN",
+      "when": "тег 40",
+      "size": 114,
+      "fields": [
+        {
+          "name": "tag",
+          "offset": 0,
+          "size": 8,
+          "type": "[u8;8]"
+        },
+        {
+          "name": "ver",
+          "offset": 8,
+          "size": 1,
+          "type": "u8"
+        },
+        {
+          "name": "ts",
+          "offset": 9,
+          "size": 8,
+          "type": "i64"
+        },
+        {
+          "name": "quote_kind",
+          "offset": 17,
+          "size": 1,
+          "type": "u8"
+        },
+        {
+          "name": "bb_usdc",
+          "offset": 18,
+          "size": 32,
+          "type": "Pubkey"
+        },
+        {
+          "name": "swap_usdc",
+          "offset": 50,
+          "size": 32,
+          "type": "Pubkey"
+        },
+        {
+          "name": "bb_wsol",
+          "offset": 82,
+          "size": 32,
+          "type": "Pubkey"
+        }
+      ]
+    },
+    {
+      "tag": "SJKEVBPN",
+      "when": "тег 41",
+      "size": 154,
+      "fields": [
+        {
+          "name": "tag",
+          "offset": 0,
+          "size": 8,
+          "type": "[u8;8]"
+        },
+        {
+          "name": "ver",
+          "offset": 8,
+          "size": 1,
+          "type": "u8"
+        },
+        {
+          "name": "ts",
+          "offset": 9,
+          "size": 8,
+          "type": "i64"
+        },
+        {
+          "name": "mint",
+          "offset": 17,
+          "size": 32,
+          "type": "Pubkey"
+        },
+        {
+          "name": "base_tp",
+          "offset": 49,
+          "size": 32,
+          "type": "Pubkey"
+        },
+        {
+          "name": "venue",
+          "offset": 81,
+          "size": 1,
+          "type": "u8"
+        },
+        {
+          "name": "bonding_curve",
+          "offset": 82,
+          "size": 32,
+          "type": "Pubkey"
+        },
+        {
+          "name": "pool",
+          "offset": 114,
+          "size": 32,
+          "type": "Pubkey"
+        },
+        {
+          "name": "slot",
+          "offset": 146,
+          "size": 8,
+          "type": "u64"
+        }
+      ]
+    },
+    {
+      "tag": "SJKEVOBS",
+      "when": "тег 42",
+      "size": 85,
+      "fields": [
+        {
+          "name": "tag",
+          "offset": 0,
+          "size": 8,
+          "type": "[u8;8]"
+        },
+        {
+          "name": "ver",
+          "offset": 8,
+          "size": 1,
+          "type": "u8"
+        },
+        {
+          "name": "ts",
+          "offset": 9,
+          "size": 8,
+          "type": "i64"
+        },
+        {
+          "name": "venue",
+          "offset": 17,
+          "size": 1,
+          "type": "u8"
+        },
+        {
+          "name": "slot",
+          "offset": 18,
+          "size": 8,
+          "type": "u64"
+        },
+        {
+          "name": "q",
+          "offset": 26,
+          "size": 8,
+          "type": "u64"
+        },
+        {
+          "name": "b",
+          "offset": 34,
+          "size": 8,
+          "type": "u64"
+        },
+        {
+          "name": "p_raw",
+          "offset": 42,
+          "size": 16,
+          "type": "u128"
+        },
+        {
+          "name": "ema",
+          "offset": 58,
+          "size": 16,
+          "type": "u128"
+        },
+        {
+          "name": "q_ema",
+          "offset": 74,
+          "size": 8,
+          "type": "u64"
+        },
+        {
+          "name": "fresh_obs",
+          "offset": 82,
+          "size": 2,
+          "type": "u16"
+        },
+        {
+          "name": "clamped",
+          "offset": 84,
+          "size": 1,
+          "type": "u8"
+        }
+      ]
+    },
+    {
+      "tag": "SJKEVVEN",
+      "when": "тег 42, смена площадки",
+      "size": 51,
+      "fields": [
+        {
+          "name": "tag",
+          "offset": 0,
+          "size": 8,
+          "type": "[u8;8]"
+        },
+        {
+          "name": "ver",
+          "offset": 8,
+          "size": 1,
+          "type": "u8"
+        },
+        {
+          "name": "ts",
+          "offset": 9,
+          "size": 8,
+          "type": "i64"
+        },
+        {
+          "name": "old",
+          "offset": 17,
+          "size": 1,
+          "type": "u8"
+        },
+        {
+          "name": "new",
+          "offset": 18,
+          "size": 1,
+          "type": "u8"
+        },
+        {
+          "name": "slot",
+          "offset": 19,
+          "size": 8,
+          "type": "u64"
+        },
+        {
+          "name": "p",
+          "offset": 27,
+          "size": 16,
+          "type": "u128"
+        },
+        {
+          "name": "q",
+          "offset": 43,
+          "size": 8,
+          "type": "u64"
+        }
+      ]
+    },
+    {
+      "tag": "SJKEVBSW",
+      "when": "тег 43",
+      "size": 65,
+      "fields": [
+        {
+          "name": "tag",
+          "offset": 0,
+          "size": 8,
+          "type": "[u8;8]"
+        },
+        {
+          "name": "ver",
+          "offset": 8,
+          "size": 1,
+          "type": "u8"
+        },
+        {
+          "name": "ts",
+          "offset": 9,
+          "size": 8,
+          "type": "i64"
+        },
+        {
+          "name": "amount_in",
+          "offset": 17,
+          "size": 8,
+          "type": "u64"
+        },
+        {
+          "name": "spent",
+          "offset": 25,
+          "size": 8,
+          "type": "u64"
+        },
+        {
+          "name": "out",
+          "offset": 33,
+          "size": 8,
+          "type": "u64"
+        },
+        {
+          "name": "min_out",
+          "offset": 41,
+          "size": 8,
+          "type": "u64"
+        },
+        {
+          "name": "cum_usdc_swapped",
+          "offset": 49,
+          "size": 8,
+          "type": "u64"
+        },
+        {
+          "name": "cum_sol_from_swaps",
+          "offset": 57,
+          "size": 8,
+          "type": "u64"
+        }
+      ]
+    },
+    {
+      "tag": "SJKEVCHK",
+      "when": "теги 44, 45",
+      "size": 138,
+      "fields": [
+        {
+          "name": "tag",
+          "offset": 0,
+          "size": 8,
+          "type": "[u8;8]"
+        },
+        {
+          "name": "ver",
+          "offset": 8,
+          "size": 1,
+          "type": "u8"
+        },
+        {
+          "name": "ts",
+          "offset": 9,
+          "size": 8,
+          "type": "i64"
+        },
+        {
+          "name": "venue",
+          "offset": 17,
+          "size": 1,
+          "type": "u8"
+        },
+        {
+          "name": "v",
+          "offset": 18,
+          "size": 8,
+          "type": "u64"
+        },
+        {
+          "name": "quote_spent",
+          "offset": 26,
+          "size": 8,
+          "type": "u64"
+        },
+        {
+          "name": "rent_extra",
+          "offset": 34,
+          "size": 8,
+          "type": "u64"
+        },
+        {
+          "name": "min_out",
+          "offset": 42,
+          "size": 8,
+          "type": "u64"
+        },
+        {
+          "name": "bought",
+          "offset": 50,
+          "size": 8,
+          "type": "u64"
+        },
+        {
+          "name": "burned",
+          "offset": 58,
+          "size": 8,
+          "type": "u64"
+        },
+        {
+          "name": "p_now",
+          "offset": 66,
+          "size": 16,
+          "type": "u128"
+        },
+        {
+          "name": "p_ref",
+          "offset": 82,
+          "size": 16,
+          "type": "u128"
+        },
+        {
+          "name": "q_ref",
+          "offset": 98,
+          "size": 8,
+          "type": "u64"
+        },
+        {
+          "name": "slot",
+          "offset": 106,
+          "size": 8,
+          "type": "u64"
+        },
+        {
+          "name": "cum_burned_tokens",
+          "offset": 114,
+          "size": 8,
+          "type": "u64"
+        },
+        {
+          "name": "cum_payout_buyback_spent",
+          "offset": 122,
+          "size": 8,
+          "type": "u64"
+        },
+        {
+          "name": "n_chunks",
+          "offset": 130,
+          "size": 8,
+          "type": "u64"
+        }
+      ]
+    },
+    {
+      "tag": "SJKEVBRN",
+      "when": "тег 46 (только при ненулевом балансе)",
+      "size": 33,
+      "fields": [
+        {
+          "name": "tag",
+          "offset": 0,
+          "size": 8,
+          "type": "[u8;8]"
+        },
+        {
+          "name": "ver",
+          "offset": 8,
+          "size": 1,
+          "type": "u8"
+        },
+        {
+          "name": "ts",
+          "offset": 9,
+          "size": 8,
+          "type": "i64"
+        },
+        {
+          "name": "amount",
+          "offset": 17,
+          "size": 8,
+          "type": "u64"
+        },
+        {
+          "name": "cum_burned_tokens",
+          "offset": 25,
+          "size": 8,
+          "type": "u64"
+        }
+      ]
+    },
+    {
+      "tag": "SJKEVVOB",
+      "when": "теги 50 и 51 op 0 (и return data тега 50)",
+      "size": 76,
+      "fields": [
+        {
+          "name": "tag",
+          "offset": 0,
+          "size": 8,
+          "type": "[u8;8]"
+        },
+        {
+          "name": "ver",
+          "offset": 8,
+          "size": 1,
+          "type": "u8"
+        },
+        {
+          "name": "ts",
+          "offset": 9,
+          "size": 8,
+          "type": "i64"
+        },
+        {
+          "name": "verdict",
+          "offset": 17,
+          "size": 1,
+          "type": "u8"
+        },
+        {
+          "name": "reason",
+          "offset": 18,
+          "size": 1,
+          "type": "u8"
+        },
+        {
+          "name": "exchange_status",
+          "offset": 19,
+          "size": 1,
+          "type": "u8"
+        },
+        {
+          "name": "majors_open",
+          "offset": 20,
+          "size": 1,
+          "type": "u8"
+        },
+        {
+          "name": "majors_closed",
+          "offset": 21,
+          "size": 1,
+          "type": "u8"
+        },
+        {
+          "name": "majors_unknown",
+          "offset": 22,
+          "size": 1,
+          "type": "u8"
+        },
+        {
+          "name": "flags",
+          "offset": 23,
+          "size": 1,
+          "type": "u8"
+        },
+        {
+          "name": "slot",
+          "offset": 24,
+          "size": 8,
+          "type": "u64"
+        },
+        {
+          "name": "ack",
+          "offset": 32,
+          "size": 8,
+          "type": "u64"
+        },
+        {
+          "name": "lrs",
+          "offset": 40,
+          "size": 8,
+          "type": "u64"
+        },
+        {
+          "name": "live",
+          "offset": 48,
+          "size": 4,
+          "type": "u32"
+        },
+        {
+          "name": "down_since",
+          "offset": 52,
+          "size": 8,
+          "type": "i64"
+        },
+        {
+          "name": "last_down_obs_ts",
+          "offset": 60,
+          "size": 8,
+          "type": "i64"
+        },
+        {
+          "name": "obs_count",
+          "offset": 68,
+          "size": 8,
+          "type": "u64"
+        }
+      ]
+    },
+    {
+      "tag": "SJKEVRCL",
+      "when": "тег 51 op 0 (срабатывание)",
+      "size": 107,
+      "fields": [
+        {
+          "name": "tag",
+          "offset": 0,
+          "size": 8,
+          "type": "[u8;8]"
+        },
+        {
+          "name": "ver",
+          "offset": 8,
+          "size": 1,
+          "type": "u8"
+        },
+        {
+          "name": "ts",
+          "offset": 9,
+          "size": 8,
+          "type": "i64"
+        },
+        {
+          "name": "reason",
+          "offset": 17,
+          "size": 1,
+          "type": "u8"
+        },
+        {
+          "name": "route",
+          "offset": 18,
+          "size": 1,
+          "type": "u8"
+        },
+        {
+          "name": "slot",
+          "offset": 19,
+          "size": 8,
+          "type": "u64"
+        },
+        {
+          "name": "down_since",
+          "offset": 27,
+          "size": 8,
+          "type": "i64"
+        },
+        {
+          "name": "down_secs",
+          "offset": 35,
+          "size": 8,
+          "type": "i64"
+        },
+        {
+          "name": "emergency_recipient",
+          "offset": 43,
+          "size": 32,
+          "type": "Pubkey"
+        },
+        {
+          "name": "usdc_destination",
+          "offset": 75,
+          "size": 32,
+          "type": "Pubkey"
+        }
+      ]
+    },
+    {
+      "tag": "SJKEVRCW",
+      "when": "тег 51 op 1, 6 (и return data op 1/6)",
+      "size": 123,
+      "fields": [
+        {
+          "name": "tag",
+          "offset": 0,
+          "size": 8,
+          "type": "[u8;8]"
+        },
+        {
+          "name": "ver",
+          "offset": 8,
+          "size": 1,
+          "type": "u8"
+        },
+        {
+          "name": "ts",
+          "offset": 9,
+          "size": 8,
+          "type": "i64"
+        },
+        {
+          "name": "op",
+          "offset": 17,
+          "size": 1,
+          "type": "u8"
+        },
+        {
+          "name": "bits",
+          "offset": 18,
+          "size": 1,
+          "type": "u8"
+        },
+        {
+          "name": "slot",
+          "offset": 19,
+          "size": 8,
+          "type": "u64"
+        },
+        {
+          "name": "D",
+          "offset": 27,
+          "size": 8,
+          "type": "u64"
+        },
+        {
+          "name": "r",
+          "offset": 35,
+          "size": 8,
+          "type": "u64"
+        },
+        {
+          "name": "max_amount",
+          "offset": 43,
+          "size": 8,
+          "type": "u64"
+        },
+        {
+          "name": "free",
+          "offset": 51,
+          "size": 8,
+          "type": "i64"
+        },
+        {
+          "name": "wd",
+          "offset": 59,
+          "size": 8,
+          "type": "u64"
+        },
+        {
+          "name": "IM",
+          "offset": 67,
+          "size": 8,
+          "type": "u64"
+        },
+        {
+          "name": "buf",
+          "offset": 75,
+          "size": 8,
+          "type": "u64"
+        },
+        {
+          "name": "c_hdr",
+          "offset": 83,
+          "size": 8,
+          "type": "i64"
+        },
+        {
+          "name": "q_tmp",
+          "offset": 91,
+          "size": 8,
+          "type": "u64"
+        },
+        {
+          "name": "total_queued_after",
+          "offset": 99,
+          "size": 8,
+          "type": "u64"
+        },
+        {
+          "name": "cum_withdrawn_after",
+          "offset": 107,
+          "size": 8,
+          "type": "u64"
+        },
+        {
+          "name": "cum_queued_after",
+          "offset": 115,
+          "size": 8,
+          "type": "u64"
+        }
+      ]
+    },
+    {
+      "tag": "SJKEVRCS",
+      "when": "тег 51 op 2, 3, 4, 5",
+      "size": 91,
+      "fields": [
+        {
+          "name": "tag",
+          "offset": 0,
+          "size": 8,
+          "type": "[u8;8]"
+        },
+        {
+          "name": "ver",
+          "offset": 8,
+          "size": 1,
+          "type": "u8"
+        },
+        {
+          "name": "ts",
+          "offset": 9,
+          "size": 8,
+          "type": "i64"
+        },
+        {
+          "name": "op",
+          "offset": 17,
+          "size": 1,
+          "type": "u8"
+        },
+        {
+          "name": "route",
+          "offset": 18,
+          "size": 1,
+          "type": "u8"
+        },
+        {
+          "name": "slot",
+          "offset": 19,
+          "size": 8,
+          "type": "u64"
+        },
+        {
+          "name": "phusd_unwrapped",
+          "offset": 27,
+          "size": 8,
+          "type": "u64"
+        },
+        {
+          "name": "usdc_from_ember",
+          "offset": 35,
+          "size": 8,
+          "type": "u64"
+        },
+        {
+          "name": "amount",
+          "offset": 43,
+          "size": 8,
+          "type": "u64"
+        },
+        {
+          "name": "destination",
+          "offset": 51,
+          "size": 32,
+          "type": "Pubkey"
+        },
+        {
+          "name": "cum_after",
+          "offset": 83,
+          "size": 8,
+          "type": "u64"
+        }
+      ]
+    }
+  ]
+}
