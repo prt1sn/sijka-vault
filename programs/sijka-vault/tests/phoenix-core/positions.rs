@@ -6,9 +6,12 @@
 //! (TF-6b / U-53 for `prefs = 0b11`, TB-37), and funding settlement at
 //! deposit (U-38).
 
+use phoenix_rise::accounts::global_config::GlobalConfig;
+use phoenix_rise::accounts::spot_collateral::{SPOT_COLLATERAL_FLAG_HAS_PERP_ASSET, SpotCollateralMetadata};
+use phoenix_rise::accounts::trader::Trader;
 use phoenix_rise::ix::native_sol::{SyncNativeParams, create_realloc_trader_ix, create_sync_native_ix};
 use phoenix_rise::ix::types::Side;
-use phoenix_rise_litesvm_test::{FixtureOraclePriceUpdate, FixturePrice};
+use phoenix_rise_litesvm_test::{FixtureOraclePriceUpdate, FixturePrice, decode_fixture_instruction};
 use solana_instruction::{AccountMeta, Instruction};
 use solana_pubkey::Pubkey;
 
@@ -318,6 +321,70 @@ fn preview_reports_mark_stale_past_hawkeye_limit() {
     assert_eq!(hp.u16(pv, "position_count"), 0);
 }
 
+/// Set up the native collateral account state for the SyncNative regression.
+/// The 0.6.5 fixture's ConfigureNativeSol admin payload no longer deserializes
+/// against current mainnet Phoenix. That admin API is outside this test and
+/// deliberately absent from the public SDK. Keep its real availability and
+/// activation instructions, but seed the same caps / 20% discount directly.
+/// Published layout: phoenix-rise-accounts 0.6.6, global_config.rs (@776) and
+/// spot_collateral.rs (320 bytes); the SDK decoder checks our field offsets.
+fn setup_native_sol_collateral(env: &mut Env) {
+    const OFFSET: usize = 776;
+    const LEN: usize = 320;
+    assert_eq!(core::mem::size_of::<SpotCollateralMetadata>(), LEN);
+    let setup = env.ctx.fixture.action_templates.iter().find(|t| t.name == "sol-collateral-setup").unwrap().clone();
+    assert_eq!(
+        setup.instructions.iter().map(|ix| ix.name.as_str()).collect::<Vec<_>>(),
+        ["sol-collateral-availability", "sol-collateral-parameters", "sol-collateral-activation"]
+    );
+    let sol_asset = env.pam_entry("SOL").asset_id;
+    for instruction in setup.instructions {
+        if instruction.name == "sol-collateral-parameters" {
+            env.patch(&PHOENIX_GC, |data| {
+                let spot = &mut data[OFFSET..OFFSET + LEN];
+                spot.fill(0); // native mint = zero, global balance = zero, reserved bytes = zero
+                spot[32..36].copy_from_slice(&9u32.to_le_bytes());
+                spot[36..40].copy_from_slice(&sol_asset.to_le_bytes());
+                for (offset, value) in [
+                    (40, 10_000_000_000u64), // per-trader cap (10 SOL)
+                    (48, 100_000_000_000),   // exchange cap (100 SOL)
+                    (80, 10_000_000_000),    // max liquidation size
+                    (88, 10_000_000),        // post-liquidation quote buffer
+                    (96, 10_000_000_000),    // quote shortfall buffer
+                ] {
+                    spot[offset..offset + 8].copy_from_slice(&value.to_le_bytes());
+                }
+                for (offset, value) in [(64, 2_000u32), (68, 2_000), (72, 500), (76, 5)] {
+                    spot[offset..offset + 4].copy_from_slice(&value.to_le_bytes());
+                }
+                spot[104] = SPOT_COLLATERAL_FLAG_HAS_PERP_ASSET;
+            });
+            let config = GlobalConfig::try_from_account_bytes(&env.gc()).unwrap();
+            let spot = config.native_sol_spot_metadata();
+            assert_eq!(spot.mint_address(), [0; 32]);
+            assert_eq!(spot.decimals(), 9);
+            assert_eq!(spot.get_asset_id(), Some(sol_asset));
+            assert_eq!(spot.max_per_trader_balance(), 10_000_000_000);
+            assert_eq!(spot.max_global_balance(), 100_000_000_000);
+            assert_eq!(spot.curr_global_balance(), 0);
+            assert_eq!(spot.min_margin_discount().as_inner(), 2_000);
+            assert_eq!(spot.max_margin_discount().as_inner(), 2_000);
+            assert_eq!(spot.max_liquidation_discount().as_inner(), 500);
+            assert_eq!(spot.min_liquidation_slippage().as_inner(), 5);
+            assert_eq!(spot.max_liquidation_size(), 10_000_000_000);
+            assert_eq!(spot.post_liquidation_buffer().as_inner(), 10_000_000);
+            assert_eq!(spot.quote_lot_collateral_shortfall_buffer().as_inner(), 10_000_000_000);
+            assert!(spot.discounts_in_bounds());
+            assert!(!spot.is_active(), "activation must still happen through Phoenix");
+        } else {
+            let ix = decode_fixture_instruction(&instruction).unwrap();
+            env.ctx.send_instructions(vec![ix], S_PAYER, &instruction.name);
+        }
+    }
+    let config = GlobalConfig::try_from_account_bytes(&env.gc()).unwrap();
+    assert!(config.native_sol_spot_metadata().is_active(), "real ActivateNativeSol must succeed");
+}
+
 /// TF-6b (U-53 remainder) and TB-37: with a Phoenix deposit cooldown `cd > 0`
 /// a stranger runs `ReallocTrader` + a SOL transfer + `SyncNative` on our
 /// `prefs = 0b11` trader. `last_deposit_slot@192` must not move, so harvest
@@ -325,7 +392,7 @@ fn preview_reports_mark_stale_past_hawkeye_limit() {
 #[test]
 fn sync_native_by_stranger_keeps_deposit_slot() {
     let Some(mut env) = Env::new() else { return };
-    env.ctx.send_fixture_transaction("sol-collateral-setup");
+    setup_native_sol_collateral(&mut env);
     env.setup_funded(0);
     let cd = 1_500u64;
     env.set_deposit_cooldown(cd);
@@ -380,6 +447,15 @@ fn sync_native_by_stranger_keeps_deposit_slot() {
     );
     assert_eq!(after.last_deposit_slot, dep_slot, "U-53: SyncNative does not write @192 with cd > 0, prefs 0b11");
     assert!(after.positions.iter().any(|(a, _)| *a >= 0xFF00_0000), "native SOL record added");
+    let trader_data = env.data(&t);
+    let trader = Trader::try_from_account_bytes(&trader_data).unwrap();
+    assert_eq!(trader.native_sol_collateral(), 10_000_000, "SyncNative must really credit the stranger's SOL");
+    let config = GlobalConfig::try_from_account_bytes(&env.gc()).unwrap();
+    assert_eq!(
+        config.native_sol_spot_metadata().curr_global_balance(),
+        10_000_000,
+        "global native SOL tally follows the credit"
+    );
     // Harvest and tag 21 keep working on the reallocated trader (TB-37).
     let x = env.harvest_inputs();
     let ex = env.expect_harvest(&x);

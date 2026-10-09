@@ -17,6 +17,51 @@ pub fn avail_amm(v: &Vault) -> u64 {
     (v.lamports(&v.k.buyback_authority) + v.token_amount(&v.k.bb_wsol)).saturating_sub(v.reserve())
 }
 
+/// A real outside v2 trade leaves negative vQR on an ordinary SOL pool.
+/// Pinning, warming observations and the vault's legacy CPI then still work,
+/// with retained fees excluded from price and the buyback budget.
+#[test]
+fn v2_retained_fees_allow_pin_observe_buy_and_burn() {
+    let mut v = vault!(Setup::sol("solamm").no_pin());
+    v.fund_authority(2 * LAMPORTS_PER_SOL);
+    let ck = v.coin().clone();
+    let before = v.data(&ck.pool);
+    let vqr_before = if before.len() >= 261 { i128::from_le_bytes(before[245..261].try_into().unwrap()) } else { 0 };
+    let fees_before = if before.len() >= 287 { u64_at(&before, 271) + u64_at(&before, 279) } else { 0 };
+    assert_eq!(vqr_before + i128::from(fees_before), 0, "fixture must be an ordinary, unboosted pool");
+
+    let trader = Trader::new(&mut v, LAMPORTS_PER_SOL);
+    trader.wrap(&mut v, LAMPORTS_PER_SOL / 10);
+    ok(trader.amm_buy_v2(&mut v, LAMPORTS_PER_SOL / 10));
+    let after = v.data(&ck.pool);
+    let vqr_after = i128::from_le_bytes(after[245..261].try_into().unwrap());
+    let fees_after = u64_at(&after, 271) + u64_at(&after, 279);
+    assert!(fees_after > fees_before, "real v2 trade retained fees");
+    assert_eq!(vqr_after, -i128::from(fees_after));
+    let (b, q) = pool_reserves(&v);
+    assert_eq!(v.token_amount(&ck.pool_quote_ta) - q, fees_after);
+    assert!(trader.base(&v) > 0);
+
+    ok(v.bb_pin());
+    v.warm();
+    assert_eq!(v.bs().last_obs_quote(), q);
+    assert_eq!(v.bs().q_ema(), q);
+    assert_eq!(v.bs().last_obs_price_x64(), price_x64(q, b));
+    let pl = plan(&v, q, avail_amm(&v), 0);
+    let supply = v.mint_supply(&ck.mint);
+    let m = ok(v.call(chunk_amm_ix(&v, 0, 0)));
+    let e = event(&m.logs, "SJKEVCHK");
+    assert_eq!(u64_at(&e, 18), pl.v);
+    assert_eq!(u64_at(&e, 42), pl.min_out);
+    assert_eq!(u128_at(&e, 66), price_x64(q, b));
+    assert_eq!(u64_at(&e, 98), q);
+    let bought = u64_at(&e, 50);
+    assert!(bought > 0);
+    assert_eq!(u64_at(&e, 58), bought);
+    assert_eq!(v.mint_supply(&ck.mint), supply - bought);
+    assert_eq!(v.token_amount(&v.buyback_token()), 0);
+}
+
 /// TD-35 (U-32, U-33): one chunk in the canonical SOL pool: the shortfall is
 /// wrapped into `bb_wsol` (System transfer + SyncNative), pump_amm
 /// `buy_exact_quote_in` with the remaining accounts `[pool_v2,
@@ -296,9 +341,9 @@ fn small_pool_chunk_below_chunk_min() {
     // Shrink the pool to 5 SOL of quote at the same price, before the warm-up.
     let (b0, q0) = pool_reserves(&v);
     let q_target = 5 * LAMPORTS_PER_SOL;
-    let vqr = q0 - v.token_amount(&ck.pool_quote_ta);
-    assert!(vqr < q_target, "virtual quote reserves {vqr}");
-    v.set_token_amount(&ck.pool_quote_ta, q_target - vqr);
+    let vqr = i128::from(q0) - i128::from(v.token_amount(&ck.pool_quote_ta));
+    assert!(vqr < i128::from(q_target), "virtual quote reserves {vqr}");
+    v.set_token_amount(&ck.pool_quote_ta, u64::try_from(i128::from(q_target) - vqr).unwrap());
     v.set_token_amount(&ck.pool_base_ta, (u128::from(b0) * u128::from(q_target) / u128::from(q0)) as u64);
     v.warm();
     let (_, q1) = pool_reserves(&v);

@@ -80,10 +80,11 @@ fn observe_rejects_malformed_or_anomalous_markets() {
         println!("observe anomaly case: {name}");
         assert_sijka(&v.observe(), err);
     }
-    // Pool: negative virtual quote reserves, foreign base mint.
+    // Pool: negative effective quote reserves, foreign base mint.
     let mut v = vault!(Setup::sol("solamm"));
     let pool = v.coin().pool;
-    v.patch(&pool, |d| d[245..261].copy_from_slice(&(-1i128).to_le_bytes()));
+    let invalid_vqr = -(i128::from(v.token_amount(&v.coin().pool_quote_ta)) + 1);
+    v.patch(&pool, |d| d[245..261].copy_from_slice(&invalid_vqr.to_le_bytes()));
     assert_sijka(&v.observe(), E::BbReserveAnomaly);
     let mut v = vault!(Setup::sol("solamm"));
     let pool = v.coin().pool;

@@ -354,9 +354,6 @@ pub fn check_pool(
             }
         }
     }
-    if f.virtual_quote_reserves < 0 || f.virtual_quote_reserves > i128::from(MAX_QUOTE_RESERVE) {
-        return Err(SijkaError::BbReserveAnomaly);
-    }
     Ok(())
 }
 
@@ -388,8 +385,9 @@ fn foreign_token_amount(ai: &AccountInfo, program: &Pubkey, mint: &Pubkey) -> Re
 /// `read_pool(pool, base_ta, quote_ta, mode)` (SPEC §5.5.2): owner
 /// `PUMP_AMM_PROGRAM`, `len ≥ 245`, disc (`BbBadPumpAccount`); binding to the
 /// pinned keys (`BbPinnedAccountMismatch`); coin checks of `mode`;
-/// `0 ≤ vqr < 2^63` (`BbReserveAnomaly`); `B = amount(base_ta)`,
-/// `Q = amount(quote_ta) + vqr < 2^63`. The caller checks the pool key (k20).
+/// `B = amount(base_ta)`, `Q = amount(quote_ta) + vqr`, with signed checked
+/// arithmetic and `0 ≤ Q < 2^63` (`BbReserveAnomaly`). A negative `vqr` can
+/// offset fees retained in the quote vault. The caller checks the pool key (k20).
 pub fn read_pool(
     pool_ai: &AccountInfo,
     base_ta: &AccountInfo,
@@ -410,8 +408,9 @@ pub fn read_pool(
     check_pool(&fields, pins, base_ta.key(), quote_ta.key(), mode)?;
     let base = foreign_token_amount(base_ta, pins.base_token_program, pins.mint)?;
     let qt = foreign_token_amount(quote_ta, &SPL_TOKEN_PROGRAM_ID, pins.quote_mint)?;
-    let vqr = u64::try_from(fields.virtual_quote_reserves).map_err(|_| SijkaError::BbReserveAnomaly)?;
-    let quote = qt.checked_add(vqr).ok_or(SijkaError::BbReserveAnomaly)?;
+    let effective_quote =
+        i128::from(qt).checked_add(fields.virtual_quote_reserves).ok_or(SijkaError::BbReserveAnomaly)?;
+    let quote = u64::try_from(effective_quote).map_err(|_| SijkaError::BbReserveAnomaly)?;
     if quote > MAX_QUOTE_RESERVE {
         return Err(SijkaError::BbReserveAnomaly);
     }
@@ -717,12 +716,12 @@ pub(crate) mod tests {
             check_pool(&m, &p, &P_BASE_TA, &P_QUOTE_TA, CoinCheck::Working),
             Err(SijkaError::BbCoinFlagsUnexpected)
         );
-        // Virtual quote reserves range.
+        // Reserve bounds apply to the effective sum in read_pool, not vqr alone.
         let mut v = good;
         v.virtual_quote_reserves = -1;
-        assert_eq!(check_pool(&v, &p, &P_BASE_TA, &P_QUOTE_TA, CoinCheck::Working), Err(SijkaError::BbReserveAnomaly));
+        assert_eq!(check_pool(&v, &p, &P_BASE_TA, &P_QUOTE_TA, CoinCheck::Working), Ok(()));
         v.virtual_quote_reserves = i128::from(MAX_QUOTE_RESERVE) + 1;
-        assert_eq!(check_pool(&v, &p, &P_BASE_TA, &P_QUOTE_TA, CoinCheck::Working), Err(SijkaError::BbReserveAnomaly));
+        assert_eq!(check_pool(&v, &p, &P_BASE_TA, &P_QUOTE_TA, CoinCheck::Working), Ok(()));
     }
 
     #[test]
@@ -759,6 +758,64 @@ pub(crate) mod tests {
             read_pool(&big.info(), &base.info(), &quote.info(), &p, CoinCheck::Working).unwrap_err(),
             SijkaError::BbReserveAnomaly
         );
+    }
+
+    #[test]
+    fn read_pool_signed_effective_quote_bounds() {
+        let cases = [
+            (9_000, -1_000, Ok(8_000)),
+            (9_000, 0, Ok(9_000)),
+            (9_000, 1_000, Ok(10_000)),
+            (9_000, -9_000, Ok(0)),
+            (9_000, -9_001, Err(SijkaError::BbReserveAnomaly)),
+            (MAX_QUOTE_RESERVE, 0, Ok(MAX_QUOTE_RESERVE)),
+            (MAX_QUOTE_RESERVE, 1, Err(SijkaError::BbReserveAnomaly)),
+            (u64::MAX, -i128::from(1u64 << 63), Ok(MAX_QUOTE_RESERVE)),
+            (u64::MAX, -i128::from(u64::MAX), Ok(0)),
+            (u64::MAX, 0, Err(SijkaError::BbReserveAnomaly)),
+            (1, i128::MAX, Err(SijkaError::BbReserveAnomaly)),
+            (0, i128::MAX, Err(SijkaError::BbReserveAnomaly)),
+            (u64::MAX, i128::MIN, Err(SijkaError::BbReserveAnomaly)),
+        ];
+        // Both quote mints and both supported base-token programs use the same
+        // signed formula. Native WSOL and ordinary USDC token vaults are covered.
+        const USDC: Pubkey = [0xC5; 32];
+        for (quote_mint, native) in [(&WSOL_MINT, true), (&USDC, false)] {
+            for base_program in [&TOKEN_2022_PROGRAM_ID, &SPL_TOKEN_PROGRAM_ID] {
+                let mut p = pins();
+                p.quote_mint = quote_mint;
+                p.base_token_program = base_program;
+                let base =
+                    TestAccount::plain(P_BASE_TA, *base_program, &token_bytes(&P_MINT, &[20; 32], 5_000_000, false));
+                for (qt, vqr, expected) in cases {
+                    let pool = TestAccount::plain([20; 32], PUMP_AMM_PROGRAM, &pool_bytes(&p, &P_SC, vqr));
+                    let quote = TestAccount::plain(
+                        P_QUOTE_TA,
+                        SPL_TOKEN_PROGRAM_ID,
+                        &token_bytes(quote_mint, &[20; 32], qt, native),
+                    );
+                    for mode in [CoinCheck::Strict, CoinCheck::Working, CoinCheck::Basic] {
+                        assert_eq!(
+                            read_pool(&pool.info(), &base.info(), &quote.info(), &p, mode).map(|r| r.quote),
+                            expected,
+                            "qt={qt}, vqr={vqr}, native={native}, mode={mode:?}"
+                        );
+                    }
+                }
+                // Old accounts omit the signed tail, which remains equivalent to zero.
+                let full = pool_bytes(&p, &P_SC, -1_000);
+                let old = TestAccount::plain([20; 32], PUMP_AMM_PROGRAM, &full[..245]);
+                let quote = TestAccount::plain(
+                    P_QUOTE_TA,
+                    SPL_TOKEN_PROGRAM_ID,
+                    &token_bytes(quote_mint, &[20; 32], 9_000, native),
+                );
+                assert_eq!(
+                    read_pool(&old.info(), &base.info(), &quote.info(), &p, CoinCheck::Working).unwrap().quote,
+                    9_000
+                );
+            }
+        }
     }
 
     #[test]

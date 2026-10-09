@@ -263,6 +263,20 @@ impl World {
         self.pool_quote = acct(self.k[22], SPL, &token_bytes(&self.k[8], &self.k[20], q, self.sol), true);
     }
 
+    /// Synthetic post-v2-trade accounting: fees stay in the vault but are
+    /// excluded from effective liquidity by negative virtual quote reserves.
+    fn retain_pool_fees(&mut self, protocol_fees: u64, creator_fees: u64) {
+        let fees = protocol_fees + creator_fees;
+        let mut pool = self.pool.data_mut().to_vec();
+        pool.resize(287, 0);
+        pool[245..261].copy_from_slice(&(-i128::from(fees)).to_le_bytes());
+        pool[271..279].copy_from_slice(&protocol_fees.to_le_bytes());
+        pool[279..287].copy_from_slice(&creator_fees.to_le_bytes());
+        self.pool = acct(self.k[20], PUMP_AMM_PROGRAM, &pool, true);
+        let quote = u64::from_le_bytes(self.pool_quote.data_mut()[64..72].try_into().unwrap());
+        self.pool_quote.data_mut()[64..72].copy_from_slice(&(quote + fees).to_le_bytes());
+    }
+
     fn state(&mut self) -> BuybackState<'_> {
         BuybackState::new(self.state.data_mut()).unwrap()
     }
@@ -859,6 +873,64 @@ fn amm_chunk_reaches_the_pump_cpi() {
     assert_eq!(run_amm(&w, &amm_accounts(&w, 10 * SOL, SOL)), Err(SijkaError::BbSlippage.into()));
     let w = warm_amm(false);
     assert_eq!(run_amm(&w, &amm_accounts(&w, SOL, 0)), Err(SijkaError::BbSlippage.into()));
+}
+
+#[test]
+fn graduated_pin_observe_and_chunk_accept_retained_pool_fees() {
+    for sol in [true, false] {
+        let mut w = World::new(sol);
+        let sc = w.k[14];
+        w.graduate(VQ, VT, &sc);
+        w.retain_pool_fees(SOL, SOL / 2);
+        w.pin().unwrap();
+        assert_eq!(w.state().venue(), bb_venue::AMM);
+        w.warm(40);
+        assert_eq!(w.state().last_obs_quote(), VQ, "retained fees are not liquidity");
+        assert_eq!(w.state().q_ema(), VQ);
+        assert_eq!(w.state().last_obs_price_x64(), price_x64(VQ, VT).unwrap());
+        w.now += 5;
+        w.slot += 1;
+        // Host CPI does not buy tokens: BbSlippage proves reserve validation,
+        // observation warm-up and chunk planning all reached the PumpSwap CPI.
+        assert_eq!(run_amm(&w, &amm_accounts(&w, 10 * SOL, SOL)), Err(SijkaError::BbSlippage.into()));
+    }
+}
+
+#[test]
+fn curve_switch_accepts_negative_vqr_and_fee_sweep_preserves_price() {
+    for sol in [true, false] {
+        let mut w = World::new(sol);
+        w.pin().unwrap();
+        w.warm(40);
+        let sc = w.k[14];
+        w.graduate(VQ, VT, &sc);
+        w.retain_pool_fees(SOL, SOL / 2);
+        w.now += 15;
+        w.slot += 1;
+        w.observe().unwrap();
+        assert_eq!(w.state().venue(), bb_venue::AMM);
+        assert_eq!(w.state().fresh_obs(), 1);
+        assert_eq!(w.state().last_obs_quote(), VQ);
+        let price_before_sweep = w.state().last_obs_price_x64();
+        assert_eq!(price_before_sweep, price_x64(VQ, VT).unwrap());
+        w.now += 15;
+        w.slot += 1;
+        w.warm(39);
+        w.now += 5;
+        w.slot += 1;
+        assert_eq!(run_amm(&w, &amm_accounts(&w, 10 * SOL, SOL)), Err(SijkaError::BbSlippage.into()));
+
+        // Equivalent post-sweep state has the same effective reserves.
+        w.pool.data_mut()[245..261].copy_from_slice(&0i128.to_le_bytes());
+        w.pool.data_mut()[271..287].fill(0);
+        w.pool_quote.data_mut()[64..72].copy_from_slice(&VQ.to_le_bytes());
+        w.now += 15;
+        w.slot += 1;
+        w.observe().unwrap();
+        assert_eq!(w.state().last_obs_quote(), VQ);
+        assert_eq!(w.state().last_obs_price_x64(), price_before_sweep);
+        assert_eq!(w.state().q_ema(), VQ);
+    }
 }
 
 #[test]

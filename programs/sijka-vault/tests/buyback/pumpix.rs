@@ -19,6 +19,7 @@ pub const IX_PUMP_BUY_V2: [u8; 8] = [184, 23, 238, 97, 103, 197, 211, 61];
 pub const IX_PUMP_MIGRATE_V2: [u8; 8] = [187, 203, 18, 31, 206, 237, 254, 41];
 pub const IX_PUMP_DISTRIBUTE_V2: [u8; 8] = [255, 203, 19, 79, 244, 68, 8, 159];
 pub const IX_AMM_BUY_EXACT_QUOTE_IN: [u8; 8] = c::IX_AMM_BUY_EXACT_QUOTE_IN;
+pub const IX_AMM_BUY_EXACT_QUOTE_IN_V2: [u8; 8] = [194, 171, 28, 70, 104, 77, 91, 47];
 pub const IX_AMM_SELL: [u8; 8] = [51, 230, 133, 164, 1, 127, 131, 173];
 
 /// Fee recipients taken from the live pump `Global` / pump_amm `GlobalConfig`
@@ -359,6 +360,38 @@ impl Trader {
         v.send(vec![ix], &[&kp])
     }
 
+    /// Current PumpSwap v2 buy (official pump_amm IDL): protocol and creator
+    /// fees remain in the pool, reducing its signed virtual quote reserves.
+    pub fn amm_buy_v2(&self, v: &mut Vault, spendable: u64) -> litesvm::types::TransactionResult {
+        let ck = v.coin();
+        let rc = Recips::pick(v);
+        let mut data = IX_AMM_BUY_EXACT_QUOTE_IN_V2.to_vec();
+        data.extend_from_slice(&spendable.to_le_bytes());
+        data.extend_from_slice(&1u64.to_le_bytes());
+        let accounts = vec![
+            w(ck.pool),
+            AccountMeta::new(self.pubkey(), true),
+            r(pk(c::AMM_GLOBAL_CONFIG)),
+            r(ck.mint),
+            r(ck.quote_mint),
+            w(self.base_ata(v)),
+            w(self.quote_ata(v)),
+            w(ck.pool_base_ta),
+            w(ck.pool_quote_ta),
+            r(ck.token_program),
+            r(tokenkeg()),
+            r(system()),
+            w(amm_uva(&self.pubkey())),
+            r(pk(c::AMM_FEE_CONFIG)),
+            w(ata(&rc.amm_buyback, &tokenkeg(), &ck.quote_mint)),
+            r(pk(c::AMM_EVENT_AUTHORITY)),
+            r(pump_amm()),
+        ];
+        let ix = Instruction { program_id: pump_amm(), accounts, data };
+        let kp = self.kp.insecure_clone();
+        v.send(vec![ix], &[&kp])
+    }
+
     pub fn amm_sell_ix(&self, v: &Vault, amount: u64, min_out: u64) -> Instruction {
         let rc = Recips::pick(v);
         let ck = v.coin();
@@ -480,5 +513,6 @@ pub fn pool_reserves(v: &Vault) -> (u64, u64) {
     let ck = v.coin();
     let p = v.data(&ck.pool);
     let vqr = if p.len() >= 261 { i128::from_le_bytes(p[245..261].try_into().unwrap()) } else { 0 };
-    (v.token_amount(&ck.pool_base_ta), v.token_amount(&ck.pool_quote_ta) + u64::try_from(vqr).unwrap())
+    let quote = u64::try_from(i128::from(v.token_amount(&ck.pool_quote_ta)) + vqr).unwrap();
+    (v.token_amount(&ck.pool_base_ta), quote)
 }

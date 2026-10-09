@@ -16,13 +16,26 @@ can check that the program deployed on mainnet is built from exactly this code.
 | Admin set at initialization, fixed forever (also the emergency recovery recipient, see below) | `7TqMhwFSCMmfyTNQdgpW882sqjk4eUbDKPYLbRwowrgC` |
 | Receiver of the 20% profit share (`creator_payout`, fixed forever) | `7TqMhwFSCMmfyTNQdgpW882sqjk4eUbDKPYLbRwowrgC` |
 
-- Release: `v1.0.0`, executable hash `c4b411d48cd8913e368683f5ca111c3ed6d4374c4f43751f6d1083dbb575b1b7`
+- Release: `v1.0.1`, executable hash `f751cbc240d862ca612a81e80647cf2ba656a2ba61e301202a0a981880f9749e`
 - Project: https://sijka.xyz
 - Security policy: [SECURITY.md](SECURITY.md)
 
 Whether the program can still be upgraded is shown on any explorer (`Upgradeable: Yes/No`) and by
 `solana program show CBcQHhWwfAHHAv2U4Zj84uyYjSJUTvx9HFeARfCTWMa6` (`Authority: none` once it is frozen). The admin, the current trading key, the
 current keeper key and the parameters (fixed at initialization) are fields of the `config` account.
+
+## v1.0.1: PumpSwap reserve compatibility
+
+PumpSwap can retain fees in its quote vault and represent the adjustment with a negative
+`virtual_quote_reserves`. The previous release rejected any negative value, which could block the
+transition to PumpSwap and subsequent buybacks after migration. This release computes effective quote
+liquidity as `quote_vault_balance + signed virtual_quote_reserves`, using checked arithmetic and requiring
+the result to remain in `0..2^63−1`. The same effective liquidity drives observations and buyback limits;
+fees do not have to be swept before each buyback. Pool bindings, coin checks, buyback limits, burn behavior,
+the profit split and authorities are unchanged. This upgrade does not freeze the program.
+
+See [Pump's signed reserve documentation](https://github.com/pump-fun/pump-public-docs/blob/8cda1fa30ea658b20909d8aedf002047119388d2/docs/NEGATIVE_VIRTUAL_QUOTE_RESERVES.md)
+for the upstream change and pricing formula.
 
 ## In short
 
@@ -193,13 +206,13 @@ reproduce the hash.
 cargo install solana-verify --version 0.5.2 --locked
 git clone https://github.com/prt1sn/sijka-vault sijka-vault
 cd sijka-vault
-git checkout v1.0.0
+git checkout v1.0.1
 solana-verify build --arch v3 --library-name sijka_vault
 solana-verify get-executable-hash target/deploy/sijka_vault.so
 solana-verify get-program-hash -u mainnet-beta CBcQHhWwfAHHAv2U4Zj84uyYjSJUTvx9HFeARfCTWMa6
 ```
 
-The last two hashes must be equal, and for release `v1.0.0` both equal `c4b411d48cd8913e368683f5ca111c3ed6d4374c4f43751f6d1083dbb575b1b7`.
+The last two hashes must be equal, and for release `v1.0.1` both equal `f751cbc240d862ca612a81e80647cf2ba656a2ba61e301202a0a981880f9749e`.
 `solana-verify build` compiles inside the `solanafoundation/solana-verifiable-build` Docker image, pinned by digest
 and selected by the Solana version in `[workspace.metadata.cli]` of `Cargo.toml`; `Cargo.lock` pins every
 dependency. The program is built as SBPFv3 (`--arch v3`, ELF `e_flags` 3); without the flag the hash differs.

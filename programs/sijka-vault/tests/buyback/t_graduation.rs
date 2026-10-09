@@ -75,6 +75,19 @@ fn curve_completes_migrates_and_the_venue_switches() {
         v.token_amount(&ck.pool_base_ta),
         v.token_amount(&ck.pool_quote_ta)
     );
+    let vqr_before = i128::from_le_bytes(pool[245..261].try_into().unwrap());
+    let fees_before = u64_at(&pool, 271) + u64_at(&pool, 279);
+    let virtual_quote_offset = vqr_before + i128::from(fees_before);
+    // Migration can seed positive virtual liquidity. An outside v2 trade
+    // must reduce its signed vQR by retained fees before the venue switch.
+    whale.wrap(&mut v, LAMPORTS_PER_SOL / 10);
+    ok(whale.amm_buy_v2(&mut v, LAMPORTS_PER_SOL / 10));
+    let pool = v.data(&ck.pool);
+    let retained_fees = u64_at(&pool, 271) + u64_at(&pool, 279);
+    let vqr = i128::from_le_bytes(pool[245..261].try_into().unwrap());
+    assert!(retained_fees > fees_before, "real v2 trade retained fees");
+    assert_eq!(vqr_before - vqr, i128::from(retained_fees - fees_before));
+    assert_eq!(vqr + i128::from(retained_fees), virtual_quote_offset, "trade preserves the virtual liquidity offset");
     // The switch.
     let ema_curve = v.bs().ema_price_x64();
     v.tick(15, 1);
@@ -85,6 +98,13 @@ fn curve_completes_migrates_and_the_venue_switches() {
     assert_eq!(bs.venue(), 2);
     assert_eq!(bs.fresh_obs(), 1);
     let (b, q) = pool_reserves(&v);
+    assert_eq!(
+        i128::from(q),
+        i128::from(v.token_amount(&ck.pool_quote_ta)) + virtual_quote_offset - i128::from(retained_fees),
+        "effective quote includes virtual liquidity and excludes retained fees"
+    );
+    assert_eq!(bs.last_obs_quote(), q);
+    assert_eq!(bs.last_obs_price_x64(), price_x64(q, b));
     println!("graduation: EMA before {ema_curve}, pool price {}, EMA after {}", price_x64(q, b), bs.ema_price_x64());
     assert!(bs.q_ema() <= q);
     // The buy-out multiplied the price while observations failed: the kept
@@ -101,5 +121,7 @@ fn curve_completes_migrates_and_the_venue_switches() {
     let e = event(&m.logs, "SJKEVCHK");
     println!("graduation: first pool chunk v {} bought {} burned {}", u64_at(&e, 18), u64_at(&e, 50), u64_at(&e, 58));
     assert_eq!(e[17], 2);
+    assert!(u64_at(&e, 50) > 0);
+    assert_eq!(u64_at(&e, 50), u64_at(&e, 58));
     assert_eq!(v.token_amount(&v.buyback_token()), 0);
 }
